@@ -14,4 +14,8 @@
       <ProjectReference Include="..\Phycocarbon.Infrastructure\Phycocarbon.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Controllers\" />
+    </ItemGroup>
+
 </Project>
