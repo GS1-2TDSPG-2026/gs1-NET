@@ -6,7 +6,7 @@ public class AlertaCritico : BaseEntity
 {
     public Guid MetricaTanqueId { get; set; }
 
-    //public Guid TanqueId { get; set; }
+    public Guid TanqueId { get; set; }
 
     public string TipoAlerta { get; set; } = string.Empty;
 
@@ -20,5 +20,5 @@ public class AlertaCritico : BaseEntity
 
     public virtual MetricaTanque MetricaTanque { get; set; } = null!;
 
-    //public virtual Tanque Tanque { get; set; } = null!;
+    public virtual Tanque Tanque { get; set; } = null!;
 }

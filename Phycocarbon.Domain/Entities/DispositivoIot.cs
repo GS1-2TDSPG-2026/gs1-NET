@@ -4,7 +4,7 @@ namespace Phycocarbon.Domain.Entities;
 
 public class DispositivoIot : BaseEntity
 {
-    //public Guid TanqueId { get; set; }
+    public Guid TanqueId { get; set; }
 
     public string CodigoSerie { get; set; } = string.Empty;
 
@@ -14,5 +14,5 @@ public class DispositivoIot : BaseEntity
 
     public DateTime DtInstalacao { get; set; }
 
-    //public virtual Tanque Tanque { get; set; } = null; 
+    public virtual Tanque Tanque { get; set; } = null; 
 }

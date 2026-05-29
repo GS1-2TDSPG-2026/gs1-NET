@@ -4,7 +4,7 @@ namespace Phycocarbon.Domain.Entities;
 
 public class PrevisaoIa : BaseEntity
 {
-    //public Guid TanqueId { get; set; }
+    public Guid TanqueId { get; set; }
 
     public Guid DadoOrbitalId { get; set; }
 
@@ -18,7 +18,7 @@ public class PrevisaoIa : BaseEntity
 
     public string ModeloUtilizado { get; set; } = string.Empty;
 
-    //public virtual Tanque Tanque { get; set; } = null!;
+    public virtual Tanque Tanque { get; set; } = null!;
 
     public virtual DadoOrbital DadoOrbital { get; set; } = null!;
 }

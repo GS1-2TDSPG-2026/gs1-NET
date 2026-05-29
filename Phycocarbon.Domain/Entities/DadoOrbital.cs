@@ -4,7 +4,7 @@ namespace Phycocarbon.Domain.Entities;
 
 public class DadoOrbital : BaseEntity
 {
-    //public Guid FazendaId { get; set; }
+    public Guid FazendaId { get; set; }
 
     public string Fonte { get; set; } = string.Empty;
 
@@ -20,7 +20,7 @@ public class DadoOrbital : BaseEntity
 
     public decimal Longitude { get; set; }
 
-    //public virtual Fazenda Fazenda { get; set; } = null!;
+    public virtual Fazenda Fazenda { get; set; } = null!;
 
     public virtual ICollection<PrevisaoIa> Previsoes { get; set; }
         = new List<PrevisaoIa>();

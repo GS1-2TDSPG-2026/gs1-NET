@@ -6,7 +6,7 @@ public class MetricaTanque : BaseEntity
 {
     public Guid DispositivoIotId { get; set; }
 
-    //public Guid TanqueId { get; set; }
+    public Guid TanqueId { get; set; }
 
     public DateTime DtLeitura { get; set; }
 
@@ -22,7 +22,7 @@ public class MetricaTanque : BaseEntity
 
     public virtual DispositivoIot DispositivoIot { get; set; } = null!;
 
-    //public virtual Tanque Tanque { get; set; } = null!;
+    public virtual Tanque Tanque { get; set; } = null!;
 
     public virtual ICollection<AlertaCritico> Alertas { get; set; }
         = new List<AlertaCritico>();
