@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phycocarbon.Application", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phycocarbon.Infrastructure", "Phycocarbon.Infrastructure\Phycocarbon.Infrastructure.csproj", "{F6BFE32B-0A43-49C3-851B-1E60FA73D933}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{76E5D030-B91F-41B4-970F-2D7F4202E8FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,11 @@ Global
 		{F6BFE32B-0A43-49C3-851B-1E60FA73D933}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6BFE32B-0A43-49C3-851B-1E60FA73D933}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6BFE32B-0A43-49C3-851B-1E60FA73D933}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C8AB18A1-76BD-4D6D-A490-1B70DAD37E11} = {76E5D030-B91F-41B4-970F-2D7F4202E8FC}
+		{94E4EA6C-99A0-4B1B-81E3-D4601F93D851} = {76E5D030-B91F-41B4-970F-2D7F4202E8FC}
+		{1AC1949B-F094-4DEB-B19E-B15B4546E242} = {76E5D030-B91F-41B4-970F-2D7F4202E8FC}
+		{F6BFE32B-0A43-49C3-851B-1E60FA73D933} = {76E5D030-B91F-41B4-970F-2D7F4202E8FC}
 	EndGlobalSection
 EndGlobal
