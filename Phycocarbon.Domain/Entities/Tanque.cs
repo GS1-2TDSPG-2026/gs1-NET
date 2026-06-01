@@ -26,7 +26,7 @@ public sealed class Tanque
 
     public Fazenda Fazenda { get; private set; } = null!;
 
-    public DispositivoIot? DispositivoIot { get; private set; }
+    public ICollection<DispositivoIot> Dispositivos { get; private set; } = [];
 
     public ICollection<MetricaTanque> Metricas { get; private set; } = [];
 
