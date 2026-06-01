@@ -1,32 +1,52 @@
-﻿using Phycocarbon.Domain.Common;
+﻿namespace Phycocarbon.Domain.Entities;
 
-namespace Phycocarbon.Domain.Entities;
-
-public class Fazenda : BaseEntity
+public sealed class Fazenda
 {
-    public Guid UsuarioResponsavelId { get; set; }
+    public Guid IdFazenda { get; private set; }
 
-    public string Nome { get; set; } = string.Empty;
+    public Guid IdUsuarioResponsavel { get; private set; }
 
-    public string Cidade { get; set; } = string.Empty;
+    public string Nome { get; private set; }
 
-    public string Uf { get; set; } = string.Empty;
+    public string Cidade { get; private set; }
 
-    public decimal Latitude { get; set; }
+    public string Uf { get; private set; }
 
-    public decimal Longitude { get; set; }
+    public decimal? Latitude { get; private set; }
 
-    public string Status { get; set; } = string.Empty;
+    public decimal? Longitude { get; private set; }
 
-    public DateTime DtCadastro { get; set; }
+    public string Status { get; private set; }
 
-    // Navigation
+    public DateTime DtCadastro { get; private set; }
 
-    public virtual Usuario UsuarioResponsavel { get; set; } = null!;
+    public Usuario UsuarioResponsavel { get; private set; } = null!;
 
-    public virtual ICollection<Tanque> Tanques { get; set; }
-        = new List<Tanque>();
+    public ICollection<Tanque> Tanques { get; private set; } = [];
 
-    public virtual ICollection<DadoOrbital> DadosOrbitais { get; set; }
-        = new List<DadoOrbital>();
+    public ICollection<DadoOrbital> DadosOrbitais { get; private set; } = [];
+
+    private Fazenda()
+    {
+    }
+
+    public Fazenda(
+        Guid idUsuarioResponsavel,
+        string nome,
+        string cidade,
+        string uf,
+        decimal? latitude,
+        decimal? longitude,
+        string status)
+    {
+        IdFazenda = Guid.NewGuid();
+        IdUsuarioResponsavel = idUsuarioResponsavel;
+        Nome = nome;
+        Cidade = cidade;
+        Uf = uf;
+        Latitude = latitude;
+        Longitude = longitude;
+        Status = status;
+        DtCadastro = DateTime.UtcNow;
+    }
 }

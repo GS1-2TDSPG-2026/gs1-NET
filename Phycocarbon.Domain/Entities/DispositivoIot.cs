@@ -1,18 +1,41 @@
-﻿using Phycocarbon.Domain.Common;
+﻿namespace Phycocarbon.Domain.Entities;
 
-namespace Phycocarbon.Domain.Entities;
-
-public class DispositivoIot : BaseEntity
+public sealed class DispositivoIot
 {
-    public Guid TanqueId { get; set; }
+    public Guid IdDispositivo { get; private set; }
 
-    public string CodigoSerie { get; set; } = string.Empty;
+    public Guid IdTanque { get; private set; }
 
-    public string TopicoMqtt { get; set; } = string.Empty;
+    public string CodigoSerie { get; private set; }
 
-    public string Modelo { get; set; } = string.Empty;
+    public string TopicoMqtt { get; private set; }
 
-    public DateTime DtInstalacao { get; set; }
+    public string? Modelo { get; private set; }
 
-    public virtual Tanque Tanque { get; set; } = null; 
+    public bool Ativo { get; private set; }
+
+    public DateTime DtInstalacao { get; private set; }
+
+    public Tanque Tanque { get; private set; } = null!;
+
+    public ICollection<MetricaTanque> Metricas { get; private set; } = [];
+
+    private DispositivoIot()
+    {
+    }
+
+    public DispositivoIot(
+        Guid idTanque,
+        string codigoSerie,
+        string topicoMqtt,
+        string? modelo)
+    {
+        IdDispositivo = Guid.NewGuid();
+        IdTanque = idTanque;
+        CodigoSerie = codigoSerie;
+        TopicoMqtt = topicoMqtt;
+        Modelo = modelo;
+        Ativo = true;
+        DtInstalacao = DateTime.UtcNow;
+    }
 }

@@ -1,24 +1,46 @@
-﻿using Phycocarbon.Domain.Common;
+﻿namespace Phycocarbon.Domain.Entities;
 
-namespace Phycocarbon.Domain.Entities;
-
-public class AlertaCritico : BaseEntity
+public sealed class AlertaCritico
 {
-    public Guid MetricaTanqueId { get; set; }
+    public Guid IdAlerta { get; private set; }
 
-    public Guid TanqueId { get; set; }
+    public Guid IdMetrica { get; private set; }
 
-    public string TipoAlerta { get; set; } = string.Empty;
+    public Guid IdTanque { get; private set; }
 
-    public string Severidade { get; set; } = string.Empty;
+    public string TipoAlerta { get; private set; }
 
-    public string Mensagem { get; set; } = string.Empty;
+    public string Severidade { get; private set; }
 
-    public string Status { get; set; } = string.Empty;
+    public string Mensagem { get; private set; }
 
-    public DateTime DtAlerta { get; set; }
+    public string Status { get; private set; }
 
-    public virtual MetricaTanque MetricaTanque { get; set; } = null!;
+    public DateTime DtAlerta { get; private set; }
 
-    public virtual Tanque Tanque { get; set; } = null!;
+    public MetricaTanque Metrica { get; private set; } = null!;
+
+    public Tanque Tanque { get; private set; } = null!;
+
+    private AlertaCritico()
+    {
+    }
+
+    public AlertaCritico(
+        Guid idMetrica,
+        Guid idTanque,
+        string tipoAlerta,
+        string severidade,
+        string mensagem,
+        string status)
+    {
+        IdAlerta = Guid.NewGuid();
+        IdMetrica = idMetrica;
+        IdTanque = idTanque;
+        TipoAlerta = tipoAlerta;
+        Severidade = severidade;
+        Mensagem = mensagem;
+        Status = status;
+        DtAlerta = DateTime.UtcNow;
+    }
 }

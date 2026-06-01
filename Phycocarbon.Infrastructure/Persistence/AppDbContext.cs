@@ -1,16 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Phycocarbon.Domain.Entities;
 
-
 namespace Phycocarbon.Infrastructure.Persistence;
-
-public class AppDbContext : DbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options)
-    {
-    }
-
     public DbSet<Usuario> Usuarios { get; set; }
 
     public DbSet<Perfil> Perfis { get; set; }

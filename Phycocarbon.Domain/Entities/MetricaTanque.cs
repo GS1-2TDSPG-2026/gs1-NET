@@ -1,29 +1,52 @@
-﻿using Phycocarbon.Domain.Common;
+﻿namespace Phycocarbon.Domain.Entities;
 
-namespace Phycocarbon.Domain.Entities;
-
-public class MetricaTanque : BaseEntity
+public sealed class MetricaTanque
 {
-    public Guid DispositivoIotId { get; set; }
+    public Guid IdMetrica { get; private set; }
 
-    public Guid TanqueId { get; set; }
+    public Guid IdDispositivo { get; private set; }
 
-    public DateTime DtLeitura { get; set; }
+    public Guid IdTanque { get; private set; }
 
-    public decimal Ph { get; set; }
+    public DateTime DtLeitura { get; private set; }
 
-    public decimal Temperatura { get; set; }
+    public decimal? Ph { get; private set; }
 
-    public decimal Turbidez { get; set; }
+    public decimal? Temperatura { get; private set; }
 
-    public decimal Luminosidade { get; set; }
+    public decimal? Turbidez { get; private set; }
 
-    public string PayloadOriginal { get; set; } = string.Empty;
+    public decimal? Luminosidade { get; private set; }
 
-    public virtual DispositivoIot DispositivoIot { get; set; } = null!;
+    public string? PayloadOriginal { get; private set; }
 
-    public virtual Tanque Tanque { get; set; } = null!;
+    public DispositivoIot Dispositivo { get; private set; } = null!;
 
-    public virtual ICollection<AlertaCritico> Alertas { get; set; }
-        = new List<AlertaCritico>();
+    public Tanque Tanque { get; private set; } = null!;
+
+    public ICollection<AlertaCritico> Alertas { get; private set; } = [];
+
+    private MetricaTanque()
+    {
+    }
+
+    public MetricaTanque(
+        Guid idDispositivo,
+        Guid idTanque,
+        decimal? ph,
+        decimal? temperatura,
+        decimal? turbidez,
+        decimal? luminosidade,
+        string? payloadOriginal)
+    {
+        IdMetrica = Guid.NewGuid();
+        IdDispositivo = idDispositivo;
+        IdTanque = idTanque;
+        Ph = ph;
+        Temperatura = temperatura;
+        Turbidez = turbidez;
+        Luminosidade = luminosidade;
+        PayloadOriginal = payloadOriginal;
+        DtLeitura = DateTime.UtcNow;
+    }
 }

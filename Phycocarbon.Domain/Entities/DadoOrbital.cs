@@ -1,27 +1,51 @@
-﻿using Phycocarbon.Domain.Common;
+﻿namespace Phycocarbon.Domain.Entities;
 
-namespace Phycocarbon.Domain.Entities;
-
-public class DadoOrbital : BaseEntity
+public sealed class DadoOrbital
 {
-    public Guid FazendaId { get; set; }
+    public Guid IdDadoOrbital { get; private set; }
 
-    public string Fonte { get; set; } = string.Empty;
+    public Guid IdFazenda { get; private set; }
 
-    public DateTime DtColeta { get; set; }
+    public string Fonte { get; private set; }
 
-    public decimal IrradianciaPar { get; set; }
+    public DateTime DtColeta { get; private set; }
 
-    public decimal Nebulosidade { get; set; }
+    public decimal? IrradianciaPar { get; private set; }
 
-    public decimal TemperaturaAmbiente { get; set; }
+    public decimal? Nebulosidade { get; private set; }
 
-    public decimal Latitude { get; set; }
+    public decimal? TemperaturaAmbiente { get; private set; }
 
-    public decimal Longitude { get; set; }
+    public decimal? Latitude { get; private set; }
 
-    public virtual Fazenda Fazenda { get; set; } = null!;
+    public decimal? Longitude { get; private set; }
 
-    public virtual ICollection<PrevisaoIa> Previsoes { get; set; }
-        = new List<PrevisaoIa>();
+    public Fazenda Fazenda { get; private set; } = null!;
+
+    public ICollection<PrevisaoIa> Previsoes { get; private set; } = [];
+
+    private DadoOrbital()
+    {
+    }
+
+    public DadoOrbital(
+        Guid idFazenda,
+        string fonte,
+        DateTime dtColeta,
+        decimal? irradianciaPar,
+        decimal? nebulosidade,
+        decimal? temperaturaAmbiente,
+        decimal? latitude,
+        decimal? longitude)
+    {
+        IdDadoOrbital = Guid.NewGuid();
+        IdFazenda = idFazenda;
+        Fonte = fonte;
+        DtColeta = dtColeta;
+        IrradianciaPar = irradianciaPar;
+        Nebulosidade = nebulosidade;
+        TemperaturaAmbiente = temperaturaAmbiente;
+        Latitude = latitude;
+        Longitude = longitude;
+    }
 }

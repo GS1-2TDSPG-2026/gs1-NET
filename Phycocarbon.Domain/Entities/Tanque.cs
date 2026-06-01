@@ -1,42 +1,64 @@
-﻿using Phycocarbon.Domain.Common;
+﻿namespace Phycocarbon.Domain.Entities;
 
-namespace Phycocarbon.Domain.Entities;
-
-public class Tanque : BaseEntity
+public sealed class Tanque
 {
-    public Guid FazendaId { get; set; }
+    public Guid IdTanque { get; private set; }
 
-    public string CodigoTanque { get; set; } = string.Empty;
+    public Guid IdFazenda { get; private set; }
 
-    public string TipoAlga { get; set; } = string.Empty;
+    public string CodigoTanque { get; private set; }
 
-    public decimal CapacidadeLitros { get; set; }
+    public string TipoAlga { get; private set; }
 
-    public decimal PhMin { get; set; }
+    public decimal CapacidadeLitros { get; private set; }
 
-    public decimal PhMax { get; set; }
+    public decimal PhMin { get; private set; }
 
-    public decimal TemperaturaMin { get; set; }
+    public decimal PhMax { get; private set; }
 
-    public decimal TemperaturaMax { get; set; }
+    public decimal TemperaturaMin { get; private set; }
 
-    public string Status { get; set; } = string.Empty;
+    public decimal TemperaturaMax { get; private set; }
 
-    public DateTime DtInstalacao { get; set; }
+    public string Status { get; private set; }
 
-    // Navigation
+    public DateTime DtInstalacao { get; private set; }
 
-    public virtual Fazenda Fazenda { get; set; } = null!;
+    public Fazenda Fazenda { get; private set; } = null!;
 
-    public virtual ICollection<DispositivoIot> Dispositivos { get; set; }
-        = new List<DispositivoIot>();
+    public DispositivoIot? DispositivoIot { get; private set; }
 
-    public virtual ICollection<MetricaTanque> Metricas { get; set; }
-        = new List<MetricaTanque>();
+    public ICollection<MetricaTanque> Metricas { get; private set; } = [];
 
-    public virtual ICollection<AlertaCritico> Alertas { get; set; }
-        = new List<AlertaCritico>();
+    public ICollection<AlertaCritico> Alertas { get; private set; } = [];
 
-    public virtual ICollection<PrevisaoIa> Previsoes { get; set; }
-        = new List<PrevisaoIa>();
+    public ICollection<PrevisaoIa> Previsoes { get; private set; } = [];
+
+    private Tanque()
+    {
+    }
+
+    public Tanque(
+        Guid idFazenda,
+        string codigoTanque,
+        string tipoAlga,
+        decimal capacidadeLitros,
+        decimal phMin,
+        decimal phMax,
+        decimal temperaturaMin,
+        decimal temperaturaMax,
+        string status)
+    {
+        IdTanque = Guid.NewGuid();
+        IdFazenda = idFazenda;
+        CodigoTanque = codigoTanque;
+        TipoAlga = tipoAlga;
+        CapacidadeLitros = capacidadeLitros;
+        PhMin = phMin;
+        PhMax = phMax;
+        TemperaturaMin = temperaturaMin;
+        TemperaturaMax = temperaturaMax;
+        Status = status;
+        DtInstalacao = DateTime.UtcNow;
+    }
 }

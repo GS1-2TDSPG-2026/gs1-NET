@@ -1,25 +1,46 @@
-﻿using Phycocarbon.Domain.Common;
+﻿namespace Phycocarbon.Domain.Entities;
 
-namespace Phycocarbon.Domain.Entities;
-
-public class Usuario : BaseEntity
+public sealed class Usuario
 {
-    public Guid PerfilId { get; set; }
+    public Guid IdUsuario { get; private set; }
 
-    public string Nome { get; set; } = string.Empty;
+    public Guid IdPerfil { get; private set; }
 
-    public string Email { get; set; } = string.Empty;
+    public string Nome { get; private set; }
 
-    public string SenhaHash { get; set; } = string.Empty;
+    public string Email { get; private set; }
 
-    public string Telefone { get; set; } = string.Empty;
+    public string SenhaHash { get; private set; }
 
-    public string Status { get; set; } = string.Empty;
+    public string? Telefone { get; private set; }
 
-    public DateTime DtCriacao { get; set; }
+    public string Status { get; private set; }
 
-    public virtual Perfil Perfil { get; set; } = null!;
+    public DateTime DtCriacao { get; private set; }
 
-    public virtual ICollection<Fazenda> Fazendas { get; set; }
-        = new List<Fazenda>();
+    public Perfil Perfil { get; private set; } = null!;
+
+    public ICollection<Fazenda> Fazendas { get; private set; } = [];
+
+    private Usuario()
+    {
+    }
+
+    public Usuario(
+        Guid idPerfil,
+        string nome,
+        string email,
+        string senhaHash,
+        string? telefone,
+        string status)
+    {
+        IdUsuario = Guid.NewGuid();
+        IdPerfil = idPerfil;
+        Nome = nome;
+        Email = email;
+        SenhaHash = senhaHash;
+        Telefone = telefone;
+        Status = status;
+        DtCriacao = DateTime.UtcNow;
+    }
 }

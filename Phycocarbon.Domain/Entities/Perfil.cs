@@ -1,13 +1,23 @@
-﻿using Phycocarbon.Domain.Common;
+﻿namespace Phycocarbon.Domain.Entities;
 
-namespace Phycocarbon.Domain.Entities;
-
-public class Perfil : BaseEntity
+public sealed class Perfil
 {
-    public string NomePerfil { get; set; } = string.Empty;
+    public Guid IdPerfil { get; private set; }
 
-    public string Descricao { get; set; } = string.Empty;
+    public string NomePerfil { get; private set; }
 
-    public virtual ICollection<Usuario> Usuarios { get; set; }
-        = new List<Usuario>();
+    public string? Descricao { get; private set; }
+
+    public ICollection<Usuario> Usuarios { get; private set; } = [];
+
+    private Perfil()
+    {
+    }
+
+    public Perfil(string nomePerfil, string? descricao)
+    {
+        IdPerfil = Guid.NewGuid();
+        NomePerfil = nomePerfil;
+        Descricao = descricao;
+    }
 }
