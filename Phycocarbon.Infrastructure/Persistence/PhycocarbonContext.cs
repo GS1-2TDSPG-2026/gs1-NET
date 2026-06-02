@@ -2,7 +2,7 @@
 using Phycocarbon.Domain.Entities;
 
 namespace Phycocarbon.Infrastructure.Persistence;
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class PhycocarbonContext(DbContextOptions<PhycocarbonContext> options) : DbContext(options)
 {
     public DbSet<Usuario> Usuarios { get; set; }
 
@@ -24,7 +24,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(PhycocarbonContext).Assembly);
 
         base.OnModelCreating(modelBuilder);
     }

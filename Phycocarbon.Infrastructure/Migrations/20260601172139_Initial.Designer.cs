@@ -11,7 +11,7 @@ using Phycocarbon.Infrastructure.Persistence;
 
 namespace Phycocarbon.Infrastructure.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(PhycocarbonContext))]
     [Migration("20260601172139_Initial")]
     partial class Initial
     {

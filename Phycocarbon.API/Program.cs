@@ -9,7 +9,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddDbContext<AppDbContext>(options =>
+        builder.Services.AddDbContext<PhycocarbonContext>(options =>
             options.UseOracle(
                 builder.Configuration.GetConnectionString("OracleDb")));
 

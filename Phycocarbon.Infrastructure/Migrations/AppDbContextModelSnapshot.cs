@@ -10,7 +10,7 @@ using Phycocarbon.Infrastructure.Persistence;
 
 namespace Phycocarbon.Infrastructure.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(PhycocarbonContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
