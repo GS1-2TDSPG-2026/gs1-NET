@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System;
+using Phycocarbon.Domain.Entities;
 
 namespace Phycocarbon.Application.DTOs;
 
@@ -21,4 +22,12 @@ public record PrevisaoIaRequestDto(
     [Required(ErrorMessage = "O modelo utilizado é obrigatório")]
     [StringLength(200, ErrorMessage = "Modelo utilizado deve ter no máximo 200 caracteres")]
     string ModeloUtilizado
-);
+){public PrevisaoIa ToDomain() =>
+    new(
+        IdTanque,
+        IdDadoOrbital,
+        BiomassaGL,
+        DtPicoPrevisto,
+        ConfiancaPct,
+        ModeloUtilizado);
+}

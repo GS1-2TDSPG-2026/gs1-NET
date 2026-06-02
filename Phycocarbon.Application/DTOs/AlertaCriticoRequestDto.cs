@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System;
+using Phycocarbon.Domain.Entities;
 
 namespace Phycocarbon.Application.DTOs;
 
@@ -23,4 +24,13 @@ public record AlertaCriticoRequestDto(
     [Required(ErrorMessage = "O status é obrigatório")]
     [StringLength(50, ErrorMessage = "Status deve ter no máximo 50 caracteres")]
     string Status
-);
+){
+    public AlertaCritico ToDomain() =>
+        new(
+            IdMetrica,
+            IdTanque,
+            TipoAlerta,
+            Severidade,
+            Mensagem,
+            Status);
+}

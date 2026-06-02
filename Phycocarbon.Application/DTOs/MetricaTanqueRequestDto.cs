@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System;
+using Phycocarbon.Domain.Entities;
 
 namespace Phycocarbon.Application.DTOs;
 
@@ -15,4 +16,14 @@ public record MetricaTanqueRequestDto(
 
     [StringLength(2000, ErrorMessage = "Payload original deve ter no máximo 2000 caracteres")]
     string? PayloadOriginal = null
-);
+){
+    public MetricaTanque ToDomain() =>
+        new(
+            IdDispositivo,
+            IdTanque,
+            Ph,
+            Temperatura,
+            Turbidez,
+            Luminosidade,
+            PayloadOriginal);
+}

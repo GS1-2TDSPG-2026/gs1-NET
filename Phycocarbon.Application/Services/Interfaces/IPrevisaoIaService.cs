@@ -12,7 +12,5 @@ public interface IPrevisaoIaService
 
     PrevisaoIaResponseDto Create(PrevisaoIaRequestDto request);
 
-    PrevisaoIaResponseDto? Update(Guid id, PrevisaoIaRequestDto request);
-
     bool Delete(Guid id);
 }

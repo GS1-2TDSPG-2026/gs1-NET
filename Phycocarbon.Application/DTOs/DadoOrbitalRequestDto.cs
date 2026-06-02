@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System;
+using Phycocarbon.Domain.Entities;
 
 namespace Phycocarbon.Application.DTOs;
 
@@ -16,4 +17,15 @@ public record DadoOrbitalRequestDto(
     decimal? TemperaturaAmbiente = null,
     decimal? Latitude = null,
     decimal? Longitude = null
-);
+){
+    public DadoOrbital ToDomain() =>
+        new(
+            IdFazenda,
+            Fonte,
+            DtColeta,
+            IrradianciaPar,
+            Nebulosidade,
+            TemperaturaAmbiente,
+            Latitude,
+            Longitude);
+}

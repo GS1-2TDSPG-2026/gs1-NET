@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System;
+using Phycocarbon.Domain.Entities;
 
 namespace Phycocarbon.Application.DTOs;
 
@@ -16,4 +17,11 @@ public record DispositivoIotRequestDto(
 
     [StringLength(200)]
     string? Modelo = null
-);
+){
+public DispositivoIot ToDomain() =>
+    new(
+        IdTanque,
+        CodigoSerie,
+        TopicoMqtt,
+        Modelo);
+}
