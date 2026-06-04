@@ -8,9 +8,9 @@ public interface IPrevisaoIaService
 {
     IReadOnlyList<PrevisaoIaResponseDto> GetAll();
 
-    PrevisaoIaResponseDto? GetById(Guid id);
+    PrevisaoIaResponseDto? GetById(long id);
 
     PrevisaoIaResponseDto Create(PrevisaoIaRequestDto request);
 
-    bool Delete(Guid id);
+    bool Delete(long id);
 }

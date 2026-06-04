@@ -16,7 +16,7 @@ public sealed class DadoOrbitalService(
             .ToList();
     }
 
-    public DadoOrbitalResponseDto? GetById(Guid id)
+    public DadoOrbitalResponseDto? GetById(long id)
     {
         var dado = dadoOrbitalRepository.GetById(id);
 
@@ -35,7 +35,7 @@ public sealed class DadoOrbitalService(
         return DadoOrbitalResponseDto.FromDomain(dado);
     }
 
-    public bool Delete(Guid id)
+    public bool Delete(long id)
     {
         return dadoOrbitalRepository.Delete(id);
     }

@@ -5,7 +5,7 @@ using Phycocarbon.Domain.Entities;
 namespace Phycocarbon.Application.DTOs;
 
 public record DispositivoIotRequestDto(
-    [Required(ErrorMessage = "O Id do tanque é obrigatório")] Guid IdTanque,
+    [Required(ErrorMessage = "O Id do tanque é obrigatório")] long IdTanque,
 
     [Required(ErrorMessage = "O código de série é obrigatório")]
     [StringLength(50, ErrorMessage = "Código de série deve ter no máximo 50 caracteres")]

@@ -6,9 +6,9 @@ public interface IDispositivoIotService
 {
     IReadOnlyList<DispositivoIotResponseDto> GetAll();
 
-    DispositivoIotResponseDto? GetById(Guid id);
+    DispositivoIotResponseDto? GetById(long id);
 
     DispositivoIotResponseDto Create(DispositivoIotRequestDto request);
 
-    bool Delete(Guid id);
+    bool Delete(long id);
 }

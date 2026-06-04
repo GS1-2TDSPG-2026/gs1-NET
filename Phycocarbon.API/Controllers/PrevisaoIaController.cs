@@ -18,10 +18,10 @@ public class PrevisaoIaController(
         return Ok(previsaoService.GetAll());
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id:long}")]
     [ProducesResponseType(typeof(PrevisaoIaResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult GetById(Guid id)
+    public IActionResult GetById(long id)
     {
         var previsao = previsaoService.GetById(id);
 
@@ -45,10 +45,10 @@ public class PrevisaoIaController(
         return Ok(previsao);
     }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{id:long}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult Delete(Guid id)
+    public IActionResult Delete(long id)
     {
         return previsaoService.Delete(id)
             ? NoContent()

@@ -13,36 +13,28 @@ public class AlertaCriticoConfiguration : IEntityTypeConfiguration<AlertaCritico
         b.HasKey(a => a.IdAlerta);
 
         b.Property(a => a.IdAlerta)
-            .HasColumnName("id_alerta");
+            .HasColumnName("ID_ALERTA");
 
         b.Property(a => a.TipoAlerta)
-            .HasColumnName("tipo_alerta")
-            .HasMaxLength(50)
-            .IsRequired();
+            .HasColumnName("TIPO_ALERTA");
 
         b.Property(a => a.Severidade)
-            .HasColumnName("severidade")
-            .HasMaxLength(50)
-            .IsRequired();
+            .HasColumnName("SEVERIDADE");
 
         b.Property(a => a.Mensagem)
-            .HasColumnName("mensagem")
-            .HasMaxLength(500)
-            .IsRequired();
+            .HasColumnName("MENSAGEM");
 
         b.Property(a => a.Status)
-            .HasColumnName("status")
-            .HasMaxLength(30)
-            .IsRequired();
+            .HasColumnName("STATUS");
 
         b.Property(a => a.DtAlerta)
-            .HasColumnName("dt_alerta");
+            .HasColumnName("DT_ALERTA");
 
         b.Property(a => a.IdMetrica)
-            .HasColumnName("id_metrica");
+            .HasColumnName("ID_METRICA");
 
         b.Property(a => a.IdTanque)
-            .HasColumnName("id_tanque");
+            .HasColumnName("ID_TANQUE");
 
         b.HasOne(a => a.Metrica)
             .WithMany(m => m.Alertas)

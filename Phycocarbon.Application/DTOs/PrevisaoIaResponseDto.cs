@@ -4,9 +4,9 @@ using System;
 namespace Phycocarbon.Application.DTOs;
 
 public record PrevisaoIaResponseDto(
-    Guid IdPrevisao,
-    Guid IdTanque,
-    Guid IdDadoOrbital,
+    long IdPrevisao,
+    long IdTanque,
+    long IdDadoOrbital,
     DateTime DtPrevisao,
     decimal BiomassaGL,
     DateTime DtPicoPrevisto,

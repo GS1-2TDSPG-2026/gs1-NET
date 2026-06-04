@@ -2,11 +2,11 @@
 
 public sealed class AlertaCritico
 {
-    public Guid IdAlerta { get; private set; }
+    public long IdAlerta { get; private set; }
 
-    public Guid IdMetrica { get; private set; }
+    public long IdMetrica { get; private set; }
 
-    public Guid IdTanque { get; private set; }
+    public long IdTanque { get; private set; }
 
     public string TipoAlerta { get; private set; }
 
@@ -27,14 +27,13 @@ public sealed class AlertaCritico
     }
 
     public AlertaCritico(
-        Guid idMetrica,
-        Guid idTanque,
+        long idMetrica,
+        long idTanque,
         string tipoAlerta,
         string severidade,
         string mensagem,
         string status)
     {
-        IdAlerta = Guid.NewGuid();
         IdMetrica = idMetrica;
         IdTanque = idTanque;
         TipoAlerta = tipoAlerta;

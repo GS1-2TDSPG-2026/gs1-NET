@@ -2,7 +2,7 @@
 
 public sealed class Perfil
 {
-    public Guid IdPerfil { get; private set; }
+    public long IdPerfil { get; private set; }
 
     public string NomePerfil { get; private set; }
 
@@ -16,7 +16,6 @@ public sealed class Perfil
 
     public Perfil(string nomePerfil, string? descricao)
     {
-        IdPerfil = Guid.NewGuid();
         NomePerfil = nomePerfil;
         Descricao = descricao;
     }

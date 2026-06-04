@@ -20,7 +20,7 @@ public class Repository<TEntity>(
             .ToList();
     }
 
-    public TEntity? GetById(Guid id)
+    public TEntity? GetById(long id)
     {
         return _set.Find(id);
     }
@@ -43,7 +43,7 @@ public class Repository<TEntity>(
         Context.SaveChanges();
     }
 
-    public bool Delete(Guid id)
+    public bool Delete(long id)
     {
         var entity = GetById(id);
 
@@ -57,7 +57,7 @@ public class Repository<TEntity>(
         return true;
     }
 
-    public bool Exists(Guid id)
+    public bool Exists(long id)
     {
         return _set.Find(id) is not null;
     }

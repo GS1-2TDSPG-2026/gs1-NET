@@ -13,38 +13,39 @@ public class DadoOrbitalConfiguration : IEntityTypeConfiguration<DadoOrbital>
         b.HasKey(d => d.IdDadoOrbital);
 
         b.Property(d => d.IdDadoOrbital)
-            .HasColumnName("id_dado_orbital");
+            .HasColumnName("ID_DADO_ORBITAL");
+
+        b.Property(d => d.IdFazenda)
+            .HasColumnName("ID_FAZENDA");
 
         b.Property(d => d.Fonte)
-            .HasColumnName("fonte")
-            .HasMaxLength(100)
+            .HasColumnName("FONTE")
+            .HasMaxLength(30)
             .IsRequired();
 
         b.Property(d => d.DtColeta)
-            .HasColumnName("dt_coleta");
+            .HasColumnName("DT_COLETA")
+            .IsRequired();
 
         b.Property(d => d.IrradianciaPar)
-            .HasColumnName("irradiancia_par")
-            .HasPrecision(10, 2);
+            .HasColumnName("IRRADIANCIA_PAR")
+            .HasPrecision(8, 3);
 
         b.Property(d => d.Nebulosidade)
-            .HasColumnName("nebulosidade")
+            .HasColumnName("NEBULOSIDADE")
             .HasPrecision(5, 2);
 
         b.Property(d => d.TemperaturaAmbiente)
-            .HasColumnName("temperatura_ambiente")
-            .HasPrecision(4, 2);
+            .HasColumnName("TEMPERATURA_AMBIENTE")
+            .HasPrecision(6, 2);
 
         b.Property(d => d.Latitude)
-            .HasColumnName("latitude")
+            .HasColumnName("LATITUDE")
             .HasPrecision(10, 7);
 
         b.Property(d => d.Longitude)
-            .HasColumnName("longitude")
-            .HasPrecision(10, 7);
-
-        b.Property(d => d.IdFazenda)
-            .HasColumnName("id_fazenda");
+            .HasColumnName("LONGITUDE")
+            .HasPrecision(11, 7);
 
         b.HasOne(d => d.Fazenda)
             .WithMany(f => f.DadosOrbitais)

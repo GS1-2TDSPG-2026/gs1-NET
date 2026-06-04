@@ -5,9 +5,9 @@ using Phycocarbon.Domain.Entities;
 namespace Phycocarbon.Application.DTOs;
 
 public record PrevisaoIaRequestDto(
-    [Required(ErrorMessage = "O Id do tanque é obrigatório")] Guid IdTanque,
+    [Required(ErrorMessage = "O Id do tanque é obrigatório")] long IdTanque,
 
-    [Required(ErrorMessage = "O Id do dado orbital é obrigatório")] Guid IdDadoOrbital,
+    [Required(ErrorMessage = "O Id do dado orbital é obrigatório")] long IdDadoOrbital,
 
     [Required(ErrorMessage = "A biomassa é obrigatória")]
     [Range(0, double.MaxValue, ErrorMessage = "Biomassa deve ser um valor não negativo")]

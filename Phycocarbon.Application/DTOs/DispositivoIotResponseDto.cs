@@ -5,12 +5,12 @@ using System;
 namespace Phycocarbon.Application.DTOs;
 
 public record DispositivoIotResponseDto(
-    Guid IdDispositivo,
-    Guid IdTanque,
+    long IdDispositivo,
+    long IdTanque,
     string CodigoSerie,
     string TopicoMqtt,
     string? Modelo,
-    bool Ativo,
+    string Ativo,
     DateTime DtInstalacao
 )
 {

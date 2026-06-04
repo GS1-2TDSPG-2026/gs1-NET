@@ -7,13 +7,13 @@ public interface IRepository<TEntity> where TEntity : class
 {
     IEnumerable<TEntity> GetAll();
 
-    TEntity? GetById(Guid id);
+    TEntity? GetById(long id);
 
     void Add(TEntity entity);
 
     void Update(TEntity entity);
 
-    bool Delete(Guid id);
+    bool Delete(long id);
 
-    bool Exists(Guid id);
+    bool Exists(long id);
 }

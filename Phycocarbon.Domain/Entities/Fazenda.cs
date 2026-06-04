@@ -2,9 +2,9 @@
 
 public sealed class Fazenda
 {
-    public Guid IdFazenda { get; private set; }
+    public long IdFazenda { get; private set; }
 
-    public Guid IdUsuarioResponsavel { get; private set; }
+    public long IdUsuarioResponsavel { get; private set; }
 
     public string Nome { get; private set; }
 
@@ -31,7 +31,7 @@ public sealed class Fazenda
     }
 
     public Fazenda(
-        Guid idUsuarioResponsavel,
+        long idUsuarioResponsavel,
         string nome,
         string cidade,
         string uf,
@@ -39,7 +39,6 @@ public sealed class Fazenda
         decimal? longitude,
         string status)
     {
-        IdFazenda = Guid.NewGuid();
         IdUsuarioResponsavel = idUsuarioResponsavel;
         Nome = nome;
         Cidade = cidade;

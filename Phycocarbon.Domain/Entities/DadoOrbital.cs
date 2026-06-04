@@ -2,9 +2,9 @@
 
 public sealed class DadoOrbital
 {
-    public Guid IdDadoOrbital { get; private set; }
+    public long IdDadoOrbital { get; private set; }
 
-    public Guid IdFazenda { get; private set; }
+    public long IdFazenda { get; private set; }
 
     public string Fonte { get; private set; }
 
@@ -29,7 +29,7 @@ public sealed class DadoOrbital
     }
 
     public DadoOrbital(
-        Guid idFazenda,
+        long idFazenda,
         string fonte,
         DateTime dtColeta,
         decimal? irradianciaPar,
@@ -38,7 +38,6 @@ public sealed class DadoOrbital
         decimal? latitude,
         decimal? longitude)
     {
-        IdDadoOrbital = Guid.NewGuid();
         IdFazenda = idFazenda;
         Fonte = fonte;
         DtColeta = dtColeta;

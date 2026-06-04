@@ -2,11 +2,11 @@
 
 public sealed class MetricaTanque
 {
-    public Guid IdMetrica { get; private set; }
+    public long IdMetrica { get; private set; }
 
-    public Guid IdDispositivo { get; private set; }
+    public long IdDispositivo { get; private set; }
 
-    public Guid IdTanque { get; private set; }
+    public long IdTanque { get; private set; }
 
     public DateTime DtLeitura { get; private set; }
 
@@ -31,15 +31,15 @@ public sealed class MetricaTanque
     }
 
     public MetricaTanque(
-        Guid idDispositivo,
-        Guid idTanque,
+        long idDispositivo,
+        long idTanque,
         decimal? ph,
         decimal? temperatura,
         decimal? turbidez,
         decimal? luminosidade,
         string? payloadOriginal)
     {
-        IdMetrica = Guid.NewGuid();
+        
         IdDispositivo = idDispositivo;
         IdTanque = idTanque;
         Ph = ph;

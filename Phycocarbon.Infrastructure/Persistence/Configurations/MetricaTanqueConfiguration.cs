@@ -13,36 +13,37 @@ public class MetricaTanqueConfiguration : IEntityTypeConfiguration<MetricaTanque
         b.HasKey(m => m.IdMetrica);
 
         b.Property(m => m.IdMetrica)
-            .HasColumnName("id_metrica");
+            .HasColumnName("ID_METRICA");
+
+        b.Property(m => m.IdDispositivo)
+            .HasColumnName("ID_DISPOSITIVO");
+
+        b.Property(m => m.IdTanque)
+            .HasColumnName("ID_TANQUE");
 
         b.Property(m => m.DtLeitura)
-            .HasColumnName("dt_leitura");
+            .HasColumnName("DT_LEITURA")
+            .IsRequired();
 
         b.Property(m => m.Ph)
-            .HasColumnName("ph")
-            .HasPrecision(4, 2);
+            .HasColumnName("PH")
+            .HasPrecision(5, 2);
 
         b.Property(m => m.Temperatura)
-            .HasColumnName("temperatura")
-            .HasPrecision(4, 2);
+            .HasColumnName("TEMPERATURA")
+            .HasPrecision(6, 2);
 
         b.Property(m => m.Turbidez)
-            .HasColumnName("turbidez")
-            .HasPrecision(4, 2);
+            .HasColumnName("TURBIDEZ")
+            .HasPrecision(8, 3);
 
         b.Property(m => m.Luminosidade)
-            .HasColumnName("luminosidade")
+            .HasColumnName("LUMINOSIDADE")
             .HasPrecision(10, 2);
 
         b.Property(m => m.PayloadOriginal)
-            .HasColumnName("payload_original")
-            .HasMaxLength(255);
-
-        b.Property(m => m.IdDispositivo)
-            .HasColumnName("id_dispositivo");
-
-        b.Property(m => m.IdTanque)
-            .HasColumnName("id_tanque");
+            .HasColumnName("PAYLOAD_ORIGINAL")
+            .HasMaxLength(4000);
 
         b.HasOne(m => m.Dispositivo)
             .WithMany(d => d.Metricas)

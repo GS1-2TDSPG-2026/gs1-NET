@@ -5,9 +5,9 @@ using Phycocarbon.Domain.Entities;
 namespace Phycocarbon.Application.DTOs;
 
 public record AlertaCriticoRequestDto(
-    [Required(ErrorMessage = "O Id da métrica é obrigatório")] Guid IdMetrica,
+    [Required(ErrorMessage = "O Id da métrica é obrigatório")] long IdMetrica,
 
-    [Required(ErrorMessage = "O Id do tanque é obrigatório")] Guid IdTanque,
+    [Required(ErrorMessage = "O Id do tanque é obrigatório")] long IdTanque,
 
     [Required(ErrorMessage = "O tipo do alerta é obrigatório")]
     [StringLength(100, ErrorMessage = "Tipo de alerta deve ter no máximo 100 caracteres")]

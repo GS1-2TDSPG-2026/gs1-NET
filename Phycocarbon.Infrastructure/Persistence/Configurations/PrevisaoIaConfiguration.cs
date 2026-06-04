@@ -13,32 +13,36 @@ public class PrevisaoIaConfiguration : IEntityTypeConfiguration<PrevisaoIa>
         b.HasKey(p => p.IdPrevisao);
 
         b.Property(p => p.IdPrevisao)
-            .HasColumnName("id_previsao");
-
-        b.Property(p => p.DtPrevisao)
-            .HasColumnName("dt_previsao");
-
-        b.Property(p => p.BiomassaGL)
-            .HasColumnName("biomassa_gl")
-            .HasPrecision(10, 2);
-
-        b.Property(p => p.DtPicoPrevisto)
-            .HasColumnName("dt_pico_previsto");
-
-        b.Property(p => p.ConfiancaPct)
-            .HasColumnName("confianca_pct")
-            .HasPrecision(5, 2);
-
-        b.Property(p => p.ModeloUtilizado)
-            .HasColumnName("modelo_utilizado")
-            .HasMaxLength(100)
-            .IsRequired();
+            .HasColumnName("ID_PREVISAO");
 
         b.Property(p => p.IdTanque)
-            .HasColumnName("id_tanque");
+            .HasColumnName("ID_TANQUE");
 
         b.Property(p => p.IdDadoOrbital)
-            .HasColumnName("id_dado_orbital");
+            .HasColumnName("ID_DADO_ORBITAL");
+
+        b.Property(p => p.DtPrevisao)
+            .HasColumnName("DT_PREVISAO")
+            .IsRequired();
+
+        b.Property(p => p.BiomassaGL)
+            .HasColumnName("BIOMASSA_G_L")
+            .HasPrecision(8, 4)
+            .IsRequired();
+
+        b.Property(p => p.DtPicoPrevisto)
+            .HasColumnName("DT_PICO_PREVISTO")
+            .IsRequired();
+
+        b.Property(p => p.ConfiancaPct)
+            .HasColumnName("CONFIANCA_PCT")
+            .HasPrecision(5, 2)
+            .IsRequired();
+
+        b.Property(p => p.ModeloUtilizado)
+            .HasColumnName("MODELO_UTILIZADO")
+            .HasMaxLength(100)
+            .IsRequired();
 
         b.HasOne(p => p.Tanque)
             .WithMany(t => t.Previsoes)

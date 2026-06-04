@@ -6,9 +6,9 @@ public interface IDadoOrbitalService
 {
     IReadOnlyList<DadoOrbitalResponseDto> GetAll();
 
-    DadoOrbitalResponseDto? GetById(Guid id);
+    DadoOrbitalResponseDto? GetById(long id);
 
     DadoOrbitalResponseDto Create(DadoOrbitalRequestDto request);
 
-    bool Delete(Guid id);
+    bool Delete(long id);
 }

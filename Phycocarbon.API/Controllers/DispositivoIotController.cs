@@ -18,10 +18,10 @@ public class DispositivoIotController(
         return Ok(dispositivoService.GetAll());
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id:long}")]
     [ProducesResponseType(typeof(DispositivoIotResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult GetById(Guid id)
+    public IActionResult GetById(long id)
     {
         var dispositivo = dispositivoService.GetById(id);
 
@@ -45,10 +45,10 @@ public class DispositivoIotController(
         return Ok(dispositivo);
     }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{id:long}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult Delete(Guid id)
+    public IActionResult Delete(long id)
     {
         return dispositivoService.Delete(id)
             ? NoContent()

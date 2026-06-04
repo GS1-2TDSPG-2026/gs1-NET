@@ -16,7 +16,7 @@ public sealed class MetricaTanqueService(
             .ToList();
     }
 
-    public MetricaTanqueResponseDto? GetById(Guid id)
+    public MetricaTanqueResponseDto? GetById(long id)
     {
         var metrica = metricaRepository.GetById(id);
 
@@ -35,7 +35,7 @@ public sealed class MetricaTanqueService(
         return MetricaTanqueResponseDto.FromDomain(metrica);
     }
 
-    public bool Delete(Guid id)
+    public bool Delete(long id)
     {
         return metricaRepository.Delete(id);
     }

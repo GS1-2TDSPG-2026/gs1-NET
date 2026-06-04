@@ -4,8 +4,8 @@ using System;
 namespace Phycocarbon.Application.DTOs;
 
 public record DadoOrbitalResponseDto(
-    Guid IdDadoOrbital,
-    Guid IdFazenda,
+    long IdDadoOrbital,
+    long IdFazenda,
     string Fonte,
     DateTime DtColeta,
     decimal? IrradianciaPar,

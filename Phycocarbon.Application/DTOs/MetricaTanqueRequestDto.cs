@@ -5,9 +5,9 @@ using Phycocarbon.Domain.Entities;
 namespace Phycocarbon.Application.DTOs;
 
 public record MetricaTanqueRequestDto(
-    [Required(ErrorMessage = "O Id do dispositivo é obrigatório")] Guid IdDispositivo,
+    [Required(ErrorMessage = "O Id do dispositivo é obrigatório")] long IdDispositivo,
 
-    [Required(ErrorMessage = "O Id do tanque é obrigatório")] Guid IdTanque,
+    [Required(ErrorMessage = "O Id do tanque é obrigatório")] long IdTanque,
 
     decimal? Ph = null,
     decimal? Temperatura = null,

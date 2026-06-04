@@ -6,9 +6,9 @@ public interface IMetricaTanqueService
 {
     IReadOnlyList<MetricaTanqueResponseDto> GetAll();
 
-    MetricaTanqueResponseDto? GetById(Guid id);
+    MetricaTanqueResponseDto? GetById(long id);
 
     MetricaTanqueResponseDto Create(MetricaTanqueRequestDto request);
 
-    bool Delete(Guid id);
+    bool Delete(long id);
 }

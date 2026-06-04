@@ -2,9 +2,9 @@
 
 public sealed class Usuario
 {
-    public Guid IdUsuario { get; private set; }
+    public long IdUsuario { get; private set; }
 
-    public Guid IdPerfil { get; private set; }
+    public long IdPerfil { get; private set; }
 
     public string Nome { get; private set; }
 
@@ -27,14 +27,13 @@ public sealed class Usuario
     }
 
     public Usuario(
-        Guid idPerfil,
+        long idPerfil,
         string nome,
         string email,
         string senhaHash,
         string? telefone,
         string status)
     {
-        IdUsuario = Guid.NewGuid();
         IdPerfil = idPerfil;
         Nome = nome;
         Email = email;

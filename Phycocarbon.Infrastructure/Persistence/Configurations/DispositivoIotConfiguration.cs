@@ -13,30 +13,33 @@ public class DispositivoIotConfiguration : IEntityTypeConfiguration<DispositivoI
         b.HasKey(d => d.IdDispositivo);
 
         b.Property(d => d.IdDispositivo)
-            .HasColumnName("id_dispositivo");
+            .HasColumnName("ID_DISPOSITIVO");
+
+        b.Property(d => d.IdTanque)
+            .HasColumnName("ID_TANQUE");
 
         b.Property(d => d.CodigoSerie)
-            .HasColumnName("codigo_serie")
+            .HasColumnName("CODIGO_SERIE")
             .HasMaxLength(50)
             .IsRequired();
 
         b.Property(d => d.TopicoMqtt)
-            .HasColumnName("topico_mqtt")
+            .HasColumnName("TOPICO_MQTT")
             .HasMaxLength(200)
             .IsRequired();
 
         b.Property(d => d.Modelo)
-            .HasColumnName("modelo")
-            .HasMaxLength(100);
+            .HasColumnName("MODELO")
+            .HasMaxLength(50);
 
         b.Property(d => d.Ativo)
-            .HasColumnName("ativo");
+            .HasColumnName("ATIVO")
+            .HasMaxLength(1)
+            .IsRequired();
 
         b.Property(d => d.DtInstalacao)
-            .HasColumnName("dt_instalacao");
-
-        b.Property(d => d.IdTanque)
-            .HasColumnName("id_tanque");
+            .HasColumnName("DT_INSTALACAO")
+            .IsRequired();
 
         b.HasOne(d => d.Tanque)
             .WithMany(t => t.Dispositivos)

@@ -16,7 +16,7 @@ public sealed class PrevisaoIaService(
             .ToList();
     }
 
-    public PrevisaoIaResponseDto? GetById(Guid id)
+    public PrevisaoIaResponseDto? GetById(long id)
     {
         var previsao = previsaoRepository.GetById(id);
 
@@ -35,7 +35,7 @@ public sealed class PrevisaoIaService(
         return PrevisaoIaResponseDto.FromDomain(previsao);
     }
 
-    public bool Delete(Guid id)
+    public bool Delete(long id)
     {
         return previsaoRepository.Delete(id);
     }

@@ -13,18 +13,15 @@ public class PerfilConfiguration : IEntityTypeConfiguration<Perfil>
         b.HasKey(p => p.IdPerfil);
 
         b.Property(p => p.IdPerfil)
-            .HasColumnName("id_perfil");
+            .HasColumnName("ID_PERFIL");
 
         b.Property(p => p.NomePerfil)
-            .HasColumnName("nome_perfil")
-            .HasMaxLength(100)
+            .HasColumnName("NOME_PERFIL")
+            .HasMaxLength(30)
             .IsRequired();
 
-        b.HasIndex(p => p.NomePerfil)
-            .IsUnique();
-
         b.Property(p => p.Descricao)
-            .HasColumnName("descricao")
-            .HasMaxLength(255);
+            .HasColumnName("DESCRICAO")
+            .HasMaxLength(200);
     }
 }

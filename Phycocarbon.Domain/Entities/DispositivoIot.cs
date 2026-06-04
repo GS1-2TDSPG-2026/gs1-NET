@@ -2,9 +2,9 @@
 
 public sealed class DispositivoIot
 {
-    public Guid IdDispositivo { get; private set; }
+    public long IdDispositivo { get; private set; }
 
-    public Guid IdTanque { get; private set; }
+    public long IdTanque { get; private set; }
 
     public string CodigoSerie { get; private set; }
 
@@ -12,7 +12,7 @@ public sealed class DispositivoIot
 
     public string? Modelo { get; private set; }
 
-    public bool Ativo { get; private set; }
+    public string Ativo { get; private set; } = "S";
 
     public DateTime DtInstalacao { get; private set; }
 
@@ -25,17 +25,16 @@ public sealed class DispositivoIot
     }
 
     public DispositivoIot(
-        Guid idTanque,
+        long idTanque,
         string codigoSerie,
         string topicoMqtt,
         string? modelo)
     {
-        IdDispositivo = Guid.NewGuid();
         IdTanque = idTanque;
         CodigoSerie = codigoSerie;
         TopicoMqtt = topicoMqtt;
         Modelo = modelo;
-        Ativo = true;
+        Ativo = "S";
         DtInstalacao = DateTime.UtcNow;
     }
 }

@@ -16,7 +16,7 @@ public sealed class AlertaCriticoService(
             .ToList();
     }
 
-    public AlertaCriticoResponseDto? GetById(Guid id)
+    public AlertaCriticoResponseDto? GetById(long id)
     {
         var alerta = alertaRepository.GetById(id);
 
@@ -36,7 +36,7 @@ public sealed class AlertaCriticoService(
     }
     
 
-    public bool Delete(Guid id)
+    public bool Delete(long id)
     {
         return alertaRepository.Delete(id);
     }

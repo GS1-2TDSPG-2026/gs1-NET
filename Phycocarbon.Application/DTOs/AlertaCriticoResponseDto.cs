@@ -4,9 +4,9 @@ using System;
 namespace Phycocarbon.Application.DTOs;
 
 public record AlertaCriticoResponseDto(
-    Guid IdAlerta,
-    Guid IdMetrica,
-    Guid IdTanque,
+    long IdAlerta,
+    long IdMetrica,
+    long IdTanque,
     string TipoAlerta,
     string Severidade,
     string Mensagem,

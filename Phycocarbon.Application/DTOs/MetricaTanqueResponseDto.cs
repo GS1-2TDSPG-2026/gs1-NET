@@ -4,9 +4,9 @@ using System;
 namespace Phycocarbon.Application.DTOs;
 
 public record MetricaTanqueResponseDto(
-    Guid IdMetrica,
-    Guid IdDispositivo,
-    Guid IdTanque,
+    long IdMetrica,
+    long IdDispositivo,
+    long IdTanque,
     DateTime DtLeitura,
     decimal? Ph,
     decimal? Temperatura,

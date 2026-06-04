@@ -18,10 +18,10 @@ public class DadoOrbitalController(
         return Ok(dadoOrbitalService.GetAll());
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id:long}")]
     [ProducesResponseType(typeof(DadoOrbitalResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult GetById(Guid id)
+    public IActionResult GetById(long id)
     {
         var dado = dadoOrbitalService.GetById(id);
 
@@ -45,10 +45,10 @@ public class DadoOrbitalController(
         return Ok(dado);
     }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{id:long}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult Delete(Guid id)
+    public IActionResult Delete(long id)
     {
         return dadoOrbitalService.Delete(id)
             ? NoContent()

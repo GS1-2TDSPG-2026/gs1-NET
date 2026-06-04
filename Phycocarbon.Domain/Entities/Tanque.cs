@@ -2,9 +2,9 @@
 
 public sealed class Tanque
 {
-    public Guid IdTanque { get; private set; }
+    public long IdTanque { get; private set; }
 
-    public Guid IdFazenda { get; private set; }
+    public long IdFazenda { get; private set; }
 
     public string CodigoTanque { get; private set; }
 
@@ -39,7 +39,7 @@ public sealed class Tanque
     }
 
     public Tanque(
-        Guid idFazenda,
+        long idFazenda,
         string codigoTanque,
         string tipoAlga,
         decimal capacidadeLitros,
@@ -49,7 +49,6 @@ public sealed class Tanque
         decimal temperaturaMax,
         string status)
     {
-        IdTanque = Guid.NewGuid();
         IdFazenda = idFazenda;
         CodigoTanque = codigoTanque;
         TipoAlga = tipoAlga;

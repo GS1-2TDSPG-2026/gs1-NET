@@ -16,7 +16,7 @@ public sealed class DispositivoIotService(
             .ToList();
     }
 
-    public DispositivoIotResponseDto? GetById(Guid id)
+    public DispositivoIotResponseDto? GetById(long id)
     {
         var dispositivo = dispositivoRepository.GetById(id);
 
@@ -35,7 +35,7 @@ public sealed class DispositivoIotService(
         return DispositivoIotResponseDto.FromDomain(dispositivo);
     }
 
-    public bool Delete(Guid id)
+    public bool Delete(long id)
     {
         return dispositivoRepository.Delete(id);
     }

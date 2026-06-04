@@ -2,11 +2,11 @@
 
 public sealed class PrevisaoIa
 {
-    public Guid IdPrevisao { get; private set; }
+    public long IdPrevisao { get; private set; }
 
-    public Guid IdTanque { get; private set; }
+    public long IdTanque { get; private set; }
 
-    public Guid IdDadoOrbital { get; private set; }
+    public long IdDadoOrbital { get; private set; }
 
     public DateTime DtPrevisao { get; private set; }
 
@@ -27,14 +27,13 @@ public sealed class PrevisaoIa
     }
 
     public PrevisaoIa(
-        Guid idTanque,
-        Guid idDadoOrbital,
+        long idTanque,
+        long idDadoOrbital,
         decimal biomassaGL,
         DateTime dtPicoPrevisto,
         decimal confiancaPct,
         string modeloUtilizado)
     {
-        IdPrevisao = Guid.NewGuid();
         IdTanque = idTanque;
         IdDadoOrbital = idDadoOrbital;
         BiomassaGL = biomassaGL;

@@ -13,41 +13,42 @@ public class FazendaConfiguration : IEntityTypeConfiguration<Fazenda>
         b.HasKey(f => f.IdFazenda);
 
         b.Property(f => f.IdFazenda)
-            .HasColumnName("id_fazenda");
+            .HasColumnName("ID_FAZENDA");
+
+        b.Property(f => f.IdUsuarioResponsavel)
+            .HasColumnName("ID_USUARIO_RESPONSAVEL");
 
         b.Property(f => f.Nome)
-            .HasColumnName("nome")
+            .HasColumnName("NOME")
             .HasMaxLength(100)
             .IsRequired();
 
         b.Property(f => f.Cidade)
-            .HasColumnName("cidade")
-            .HasMaxLength(100)
+            .HasColumnName("CIDADE")
+            .HasMaxLength(80)
             .IsRequired();
 
         b.Property(f => f.Uf)
-            .HasColumnName("uf")
+            .HasColumnName("UF")
             .HasMaxLength(2)
             .IsRequired();
 
         b.Property(f => f.Latitude)
-            .HasColumnName("latitude")
+            .HasColumnName("LATITUDE")
             .HasPrecision(10, 7);
 
         b.Property(f => f.Longitude)
-            .HasColumnName("longitude")
-            .HasPrecision(10, 7);
+            .HasColumnName("LONGITUDE")
+            .HasPrecision(11, 7);
 
         b.Property(f => f.Status)
-            .HasColumnName("status")
-            .HasMaxLength(30)
+            .HasColumnName("STATUS")
+            .HasMaxLength(10)
             .IsRequired();
 
         b.Property(f => f.DtCadastro)
-            .HasColumnName("dt_cadastro");
-
-        b.Property(f => f.IdUsuarioResponsavel)
-            .HasColumnName("id_usuario_responsavel");
+            .HasColumnName("DT_CADASTRO")
+            .IsRequired();
 
         b.HasOne(f => f.UsuarioResponsavel)
             .WithMany(u => u.Fazendas)

@@ -5,7 +5,7 @@ using Phycocarbon.Domain.Entities;
 namespace Phycocarbon.Application.DTOs;
 
 public record DadoOrbitalRequestDto(
-    [Required(ErrorMessage = "O Id da fazenda é obrigatório")] Guid IdFazenda,
+    [Required(ErrorMessage = "O Id da fazenda é obrigatório")] long IdFazenda,
 
     [Required(ErrorMessage = "A fonte é obrigatória")]
     [StringLength(200, ErrorMessage = "Fonte deve ter no máximo 200 caracteres")]

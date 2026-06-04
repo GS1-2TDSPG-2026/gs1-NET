@@ -18,10 +18,10 @@ public class MetricaTanqueController(
         return Ok(metricaService.GetAll());
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id:long}")]
     [ProducesResponseType(typeof(MetricaTanqueResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult GetById(Guid id)
+    public IActionResult GetById(long id)
     {
         var metrica = metricaService.GetById(id);
 
@@ -45,10 +45,10 @@ public class MetricaTanqueController(
         return Ok(metrica);
     }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{id:long}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult Delete(Guid id)
+    public IActionResult Delete(long id)
     {
         return metricaService.Delete(id)
             ? NoContent()
