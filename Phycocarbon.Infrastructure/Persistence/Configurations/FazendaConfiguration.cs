@@ -4,9 +4,11 @@ using Phycocarbon.Domain.Entities;
 
 namespace Phycocarbon.Infrastructure.Persistence.Configurations;
 
-public class FazendaConfiguration : IEntityTypeConfiguration<Fazenda>
+public sealed class FazendaConfiguration
+    : IEntityTypeConfiguration<Fazenda>
 {
-    public void Configure(EntityTypeBuilder<Fazenda> b)
+    public void Configure(
+        EntityTypeBuilder<Fazenda> b)
     {
         b.ToTable("TB_FAZENDA");
 
@@ -16,7 +18,8 @@ public class FazendaConfiguration : IEntityTypeConfiguration<Fazenda>
             .HasColumnName("ID_FAZENDA");
 
         b.Property(f => f.IdUsuarioResponsavel)
-            .HasColumnName("ID_USUARIO_RESPONSAVEL");
+            .HasColumnName("ID_USUARIO_RESPONSAVEL")
+            .IsRequired();
 
         b.Property(f => f.Nome)
             .HasColumnName("NOME")
@@ -52,6 +55,7 @@ public class FazendaConfiguration : IEntityTypeConfiguration<Fazenda>
 
         b.HasOne(f => f.UsuarioResponsavel)
             .WithMany(u => u.Fazendas)
-            .HasForeignKey(f => f.IdUsuarioResponsavel);
+            .HasForeignKey(f => f.IdUsuarioResponsavel)
+            .HasConstraintName("FK_FAZENDA_USUARIO");
     }
 }

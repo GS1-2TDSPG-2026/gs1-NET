@@ -4,52 +4,57 @@ using Phycocarbon.Domain.Entities;
 
 namespace Phycocarbon.Infrastructure.Persistence.Configurations;
 
-public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
+public sealed class UsuarioConfiguration
+    : IEntityTypeConfiguration<Usuario>
 {
-    public void Configure(EntityTypeBuilder<Usuario> b)
+    public void Configure(
+        EntityTypeBuilder<Usuario> b)
     {
         b.ToTable("TB_USUARIO");
 
         b.HasKey(u => u.IdUsuario);
 
         b.Property(u => u.IdUsuario)
-            .HasColumnName("id_usuario");
+            .HasColumnName("ID_USUARIO");
+
+        b.Property(u => u.IdPerfil)
+            .HasColumnName("ID_PERFIL")
+            .IsRequired();
 
         b.Property(u => u.Nome)
-            .HasColumnName("nome")
+            .HasColumnName("NOME")
             .HasMaxLength(100)
             .IsRequired();
 
         b.Property(u => u.Email)
-            .HasColumnName("email")
-            .HasMaxLength(255)
+            .HasColumnName("EMAIL")
+            .HasMaxLength(150)
             .IsRequired();
 
         b.HasIndex(u => u.Email)
             .IsUnique();
 
         b.Property(u => u.SenhaHash)
-            .HasColumnName("senha_hash")
+            .HasColumnName("SENHA_HASH")
             .HasMaxLength(255)
             .IsRequired();
 
         b.Property(u => u.Telefone)
-            .HasColumnName("telefone")
-            .HasMaxLength(30);
+            .HasColumnName("TELEFONE")
+            .HasMaxLength(20);
 
         b.Property(u => u.Status)
-            .HasColumnName("status")
-            .HasMaxLength(30)
+            .HasColumnName("STATUS")
+            .HasMaxLength(1)
             .IsRequired();
 
         b.Property(u => u.DtCriacao)
-            .HasColumnName("dt_criacao");
-
-        b.Property(u => u.IdPerfil)
-            .HasColumnName("id_perfil");
+            .HasColumnName("DT_CRIACAO")
+            .IsRequired();
 
         b.HasOne(u => u.Perfil)
             .WithMany(p => p.Usuarios)
-            .HasForeignKey(u => u.IdPerfil);
+            .HasForeignKey(u => u.IdPerfil)
+            .HasConstraintName("FK_USUARIO_PERFIL");
     }
 }

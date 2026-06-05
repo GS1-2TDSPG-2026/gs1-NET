@@ -4,9 +4,11 @@ using Phycocarbon.Domain.Entities;
 
 namespace Phycocarbon.Infrastructure.Persistence.Configurations;
 
-public class PerfilConfiguration : IEntityTypeConfiguration<Perfil>
+public sealed class PerfilConfiguration
+    : IEntityTypeConfiguration<Perfil>
 {
-    public void Configure(EntityTypeBuilder<Perfil> b)
+    public void Configure(
+        EntityTypeBuilder<Perfil> b)
     {
         b.ToTable("TB_PERFIL");
 
@@ -23,5 +25,8 @@ public class PerfilConfiguration : IEntityTypeConfiguration<Perfil>
         b.Property(p => p.Descricao)
             .HasColumnName("DESCRICAO")
             .HasMaxLength(200);
+
+        b.HasIndex(p => p.NomePerfil)
+            .IsUnique();
     }
 }
