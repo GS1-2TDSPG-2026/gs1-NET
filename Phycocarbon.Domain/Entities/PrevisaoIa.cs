@@ -34,6 +34,8 @@ public sealed class PrevisaoIa
         decimal confiancaPct,
         string modeloUtilizado)
     {
+        IdPrevisao = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        
         IdTanque = idTanque;
         IdDadoOrbital = idDadoOrbital;
         BiomassaGL = biomassaGL;

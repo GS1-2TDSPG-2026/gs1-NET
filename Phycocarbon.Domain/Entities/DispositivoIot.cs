@@ -30,6 +30,7 @@ public sealed class DispositivoIot
         string topicoMqtt,
         string? modelo)
     {
+        IdDispositivo = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         IdTanque = idTanque;
         CodigoSerie = codigoSerie;
         TopicoMqtt = topicoMqtt;
