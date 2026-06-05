@@ -49,7 +49,22 @@ public static class PhycocarbonServiceCollectionExtensions
         services.AddScoped(
             typeof(IRepository<>),
             typeof(Repository<>));
+        
+        services.AddScoped<
+            IPerfilRepository,
+            PerfilRepository>();
 
+        services.AddScoped<
+            IUsuarioRepository,
+            UsuarioRepository>();
+
+        services.AddScoped<
+            IFazendaRepository,
+            FazendaRepository>();
+
+        services.AddScoped<
+            ITanqueRepository,
+            TanqueRepository>();
         return services;
     }
     public static IServiceCollection AddApplicationServices(
@@ -74,7 +89,22 @@ public static class PhycocarbonServiceCollectionExtensions
         services.AddScoped<
             IPrevisaoIaService,
             PrevisaoIaService>();
+        
+        services.AddScoped<
+            IPerfilService,
+            PerfilService>();
 
+        services.AddScoped<
+            IUsuarioService,
+            UsuarioService>();
+
+        services.AddScoped<
+            IFazendaService,
+            FazendaService>();
+
+        services.AddScoped<
+            ITanqueService,
+            TanqueService>();
         return services;
     }
 }
