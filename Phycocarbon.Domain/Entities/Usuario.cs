@@ -25,21 +25,67 @@ public sealed class Usuario
     private Usuario()
     {
     }
+    
+    private static void ValidarNome(
+        string nome)
+    {
+        if (string.IsNullOrWhiteSpace(nome))
+            throw new ArgumentException(
+                "Nome é obrigatório.");
+    }
 
+    private static void ValidarEmail(
+        string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            throw new ArgumentException(
+                "Email é obrigatório.");
+
+        if (!email.Contains("@"))
+            throw new ArgumentException(
+                "Email inválido.");
+    }
+
+    private static void ValidarSenha(
+        string senha)
+    {
+        if (string.IsNullOrWhiteSpace(senha))
+            throw new ArgumentException(
+                "Senha é obrigatória.");
+
+        if (senha.Length < 8)
+            throw new ArgumentException(
+                "Senha deve possuir no mínimo 8 caracteres.");
+    }
+    
+    public bool VerificarSenha(
+        string senha)
+    {
+        return HashHelper.Verify(
+            senha,
+            SenhaHash);
+    }
+    
     public Usuario(
         long idPerfil,
         string nome,
         string email,
-        string senhaHash,
+        string senha,
         string? telefone,
         string status)
     {
+        ValidarNome(nome);
+        ValidarEmail(email);
+        ValidarSenha(senha);
+
         IdPerfil = idPerfil;
         Nome = nome;
         Email = email;
-        SenhaHash = senhaHash;
         Telefone = telefone;
         Status = status;
+
+        SenhaHash = HashHelper.GenerateHash(senha);
+
         DtCriacao = DateTime.UtcNow;
     }
 }
