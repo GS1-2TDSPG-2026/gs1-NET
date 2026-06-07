@@ -34,7 +34,6 @@ public sealed class AlertaCritico
         string mensagem,
         string status)
     {
-        IdAlerta = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         
         IdMetrica = idMetrica;
         IdTanque = idTanque;

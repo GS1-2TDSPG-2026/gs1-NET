@@ -39,7 +39,6 @@ public sealed class MetricaTanque
         decimal? luminosidade,
         string? payloadOriginal)
     {
-        IdMetrica = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         IdDispositivo = idDispositivo;
         IdTanque = idTanque;
         Ph = ph;

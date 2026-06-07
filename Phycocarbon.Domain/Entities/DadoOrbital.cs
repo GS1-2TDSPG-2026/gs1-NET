@@ -38,8 +38,6 @@ public sealed class DadoOrbital
         decimal? latitude,
         decimal? longitude)
     {
-        IdDadoOrbital = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        
         IdFazenda = idFazenda;
         Fonte = fonte;
         DtColeta = dtColeta;
