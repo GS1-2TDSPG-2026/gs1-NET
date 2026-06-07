@@ -2,6 +2,7 @@
 using Phycocarbon.Application.Repositories;
 using Phycocarbon.Application.Services.Implementations;
 using Phycocarbon.Application.Services.Interfaces;
+using Phycocarbon.Infrastructure.Messaging;
 using Phycocarbon.Infrastructure.Persistence;
 using Phycocarbon.Infrastructure.Persistence.Repositories;
 
@@ -105,6 +106,20 @@ public static class PhycocarbonServiceCollectionExtensions
         services.AddScoped<
             ITanqueService,
             TanqueService>();
+        return services;
+    }
+
+    public static IServiceCollection AddMessagingServices(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.Configure<MqttOptions>(
+            configuration.GetSection("Mqtt"));
+
+        services.AddSingleton<
+            IMqttTelemetryProcessor,
+            MqttTelemetryProcessor>();
+
         return services;
     }
 }

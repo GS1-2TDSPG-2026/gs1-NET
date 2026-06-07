@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.OpenApi;
 using Phycocarbon.API.Extensions;
+using Phycocarbon.Infrastructure.Messaging;
 
 namespace Phycocarbon.API;
 
@@ -18,6 +19,12 @@ public class Program
 
         builder.Services
             .AddApplicationServices();
+
+        builder.Services
+            .AddMessagingServices(builder.Configuration);
+        
+        builder.Services.AddHostedService<
+            MqttConsumerService>();
 
         builder.Services.AddControllers();
 
