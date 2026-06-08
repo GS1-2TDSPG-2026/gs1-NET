@@ -1,7 +1,7 @@
 using System.Reflection;
 using Microsoft.OpenApi;
 using Phycocarbon.API.Extensions;
-using Phycocarbon.API.HostedServices;
+using Phycocarbon.Infrastructure.Messaging;
 
 namespace Phycocarbon.API;
 
@@ -20,8 +20,11 @@ public class Program
         builder.Services
             .AddApplicationServices();
 
+        builder.Services
+            .AddMessagingServices(builder.Configuration);
+        
         builder.Services.AddHostedService<
-            MqttTelemetryBackgroundService>();
+            MqttConsumerService>();
 
         builder.Services.AddControllers();
 
@@ -47,7 +50,6 @@ public class Program
                 xmlPath,
                 includeControllerXmlComments: true);
         });
-
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("MobilePolicy", policy =>
@@ -58,26 +60,21 @@ public class Program
                     .AllowAnyHeader();
             });
         });
-
+        
         var app = builder.Build();
 
-        app.UseCors("MobilePolicy");
+        app.UseSwagger();
 
-        if (app.Environment.IsDevelopment())
+        app.UseSwaggerUI(options =>
         {
-            app.UseSwagger();
+            options.SwaggerEndpoint(
+                "/swagger/v1/swagger.json",
+                "Phycocarbon API v1");
 
-            app.UseSwaggerUI(options =>
-            {
-                options.SwaggerEndpoint(
-                    "/swagger/v1/swagger.json",
-                    "Phycocarbon API v1");
+            options.RoutePrefix = "";
+        });
 
-                options.RoutePrefix = "";
-            });
-        }
-
-        app.UseHttpsRedirection();
+        app.UseCors("MobilePolicy");
 
         app.UseAuthorization();
 
