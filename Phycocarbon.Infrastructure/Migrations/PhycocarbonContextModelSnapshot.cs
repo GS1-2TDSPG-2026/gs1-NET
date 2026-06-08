@@ -11,7 +11,7 @@ using Phycocarbon.Infrastructure.Persistence;
 namespace Phycocarbon.Infrastructure.Migrations
 {
     [DbContext(typeof(PhycocarbonContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    partial class PhycocarbonContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -22,48 +22,93 @@ namespace Phycocarbon.Infrastructure.Migrations
 
             OracleModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DispositivoIot", b =>
+                {
+                    b.Property<long>("IdDispositivo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_DISPOSITIVO");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdDispositivo"));
+
+                    b.Property<string>("Ativo")
+                        .IsRequired()
+                        .HasMaxLength(1)
+                        .HasColumnType("NVARCHAR2(1)")
+                        .HasColumnName("ATIVO");
+
+                    b.Property<string>("CodigoSerie")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("NVARCHAR2(50)")
+                        .HasColumnName("CODIGO_SERIE");
+
+                    b.Property<DateTime>("DtInstalacao")
+                        .HasColumnType("TIMESTAMP(7)")
+                        .HasColumnName("DT_INSTALACAO");
+
+                    b.Property<long>("IdTanque")
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_TANQUE");
+
+                    b.Property<string>("Modelo")
+                        .HasMaxLength(50)
+                        .HasColumnType("NVARCHAR2(50)")
+                        .HasColumnName("MODELO");
+
+                    b.Property<string>("TopicoMqtt")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("NVARCHAR2(200)")
+                        .HasColumnName("TOPICO_MQTT");
+
+                    b.HasKey("IdDispositivo");
+
+                    b.HasIndex("IdTanque");
+
+                    b.ToTable("TB_DISPOSITIVO_IOT", (string)null);
+                });
+
             modelBuilder.Entity("Phycocarbon.Domain.Entities.AlertaCritico", b =>
                 {
-                    b.Property<Guid>("IdAlerta")
+                    b.Property<long>("IdAlerta")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_alerta");
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_ALERTA");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdAlerta"));
 
                     b.Property<DateTime>("DtAlerta")
                         .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("dt_alerta");
+                        .HasColumnName("DT_ALERTA");
 
-                    b.Property<Guid>("IdMetrica")
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_metrica");
+                    b.Property<long>("IdMetrica")
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_METRICA");
 
-                    b.Property<Guid>("IdTanque")
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_tanque");
+                    b.Property<long>("IdTanque")
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_TANQUE");
 
                     b.Property<string>("Mensagem")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("NVARCHAR2(500)")
-                        .HasColumnName("mensagem");
+                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnName("MENSAGEM");
 
                     b.Property<string>("Severidade")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)")
-                        .HasColumnName("severidade");
+                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnName("SEVERIDADE");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("NVARCHAR2(30)")
-                        .HasColumnName("status");
+                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnName("STATUS");
 
                     b.Property<string>("TipoAlerta")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)")
-                        .HasColumnName("tipo_alerta");
+                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnName("TIPO_ALERTA");
 
                     b.HasKey("IdAlerta");
 
@@ -76,49 +121,51 @@ namespace Phycocarbon.Infrastructure.Migrations
 
             modelBuilder.Entity("Phycocarbon.Domain.Entities.DadoOrbital", b =>
                 {
-                    b.Property<Guid>("IdDadoOrbital")
+                    b.Property<long>("IdDadoOrbital")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_dado_orbital");
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_DADO_ORBITAL");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdDadoOrbital"));
 
                     b.Property<DateTime>("DtColeta")
                         .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("dt_coleta");
+                        .HasColumnName("DT_COLETA");
 
                     b.Property<string>("Fonte")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("fonte");
+                        .HasMaxLength(30)
+                        .HasColumnType("NVARCHAR2(30)")
+                        .HasColumnName("FONTE");
 
-                    b.Property<Guid>("IdFazenda")
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_fazenda");
+                    b.Property<long>("IdFazenda")
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_FAZENDA");
 
                     b.Property<decimal?>("IrradianciaPar")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("DECIMAL(10,2)")
-                        .HasColumnName("irradiancia_par");
+                        .HasPrecision(8, 3)
+                        .HasColumnType("DECIMAL(8,3)")
+                        .HasColumnName("IRRADIANCIA_PAR");
 
                     b.Property<decimal?>("Latitude")
                         .HasPrecision(10, 7)
                         .HasColumnType("DECIMAL(10,7)")
-                        .HasColumnName("latitude");
+                        .HasColumnName("LATITUDE");
 
                     b.Property<decimal?>("Longitude")
-                        .HasPrecision(10, 7)
-                        .HasColumnType("DECIMAL(10,7)")
-                        .HasColumnName("longitude");
+                        .HasPrecision(11, 7)
+                        .HasColumnType("DECIMAL(11,7)")
+                        .HasColumnName("LONGITUDE");
 
                     b.Property<decimal?>("Nebulosidade")
                         .HasPrecision(5, 2)
                         .HasColumnType("DECIMAL(5,2)")
-                        .HasColumnName("nebulosidade");
+                        .HasColumnName("NEBULOSIDADE");
 
                     b.Property<decimal?>("TemperaturaAmbiente")
-                        .HasPrecision(4, 2)
-                        .HasColumnType("DECIMAL(4,2)")
-                        .HasColumnName("temperatura_ambiente");
+                        .HasPrecision(6, 2)
+                        .HasColumnType("DECIMAL(6,2)")
+                        .HasColumnName("TEMPERATURA_AMBIENTE");
 
                     b.HasKey("IdDadoOrbital");
 
@@ -127,97 +174,56 @@ namespace Phycocarbon.Infrastructure.Migrations
                     b.ToTable("TB_DADO_ORBITAL", (string)null);
                 });
 
-            modelBuilder.Entity("Phycocarbon.Domain.Entities.DispositivoIot", b =>
-                {
-                    b.Property<Guid>("IdDispositivo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_dispositivo");
-
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("BOOLEAN")
-                        .HasColumnName("ativo");
-
-                    b.Property<string>("CodigoSerie")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)")
-                        .HasColumnName("codigo_serie");
-
-                    b.Property<DateTime>("DtInstalacao")
-                        .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("dt_instalacao");
-
-                    b.Property<Guid>("IdTanque")
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_tanque");
-
-                    b.Property<string>("Modelo")
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("modelo");
-
-                    b.Property<string>("TopicoMqtt")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("NVARCHAR2(200)")
-                        .HasColumnName("topico_mqtt");
-
-                    b.HasKey("IdDispositivo");
-
-                    b.HasIndex("IdTanque");
-
-                    b.ToTable("TB_DISPOSITIVO_IOT", (string)null);
-                });
-
             modelBuilder.Entity("Phycocarbon.Domain.Entities.Fazenda", b =>
                 {
-                    b.Property<Guid>("IdFazenda")
+                    b.Property<long>("IdFazenda")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_fazenda");
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_FAZENDA");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdFazenda"));
 
                     b.Property<string>("Cidade")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("cidade");
+                        .HasMaxLength(80)
+                        .HasColumnType("NVARCHAR2(80)")
+                        .HasColumnName("CIDADE");
 
                     b.Property<DateTime>("DtCadastro")
                         .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("dt_cadastro");
+                        .HasColumnName("DT_CADASTRO");
 
-                    b.Property<Guid>("IdUsuarioResponsavel")
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_usuario_responsavel");
+                    b.Property<long>("IdUsuarioResponsavel")
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_USUARIO_RESPONSAVEL");
 
                     b.Property<decimal?>("Latitude")
                         .HasPrecision(10, 7)
                         .HasColumnType("DECIMAL(10,7)")
-                        .HasColumnName("latitude");
+                        .HasColumnName("LATITUDE");
 
                     b.Property<decimal?>("Longitude")
-                        .HasPrecision(10, 7)
-                        .HasColumnType("DECIMAL(10,7)")
-                        .HasColumnName("longitude");
+                        .HasPrecision(11, 7)
+                        .HasColumnType("DECIMAL(11,7)")
+                        .HasColumnName("LONGITUDE");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("nome");
+                        .HasColumnName("NOME");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("NVARCHAR2(30)")
-                        .HasColumnName("status");
+                        .HasMaxLength(10)
+                        .HasColumnType("NVARCHAR2(10)")
+                        .HasColumnName("STATUS");
 
                     b.Property<string>("Uf")
                         .IsRequired()
                         .HasMaxLength(2)
                         .HasColumnType("NVARCHAR2(2)")
-                        .HasColumnName("uf");
+                        .HasColumnName("UF");
 
                     b.HasKey("IdFazenda");
 
@@ -228,47 +234,49 @@ namespace Phycocarbon.Infrastructure.Migrations
 
             modelBuilder.Entity("Phycocarbon.Domain.Entities.MetricaTanque", b =>
                 {
-                    b.Property<Guid>("IdMetrica")
+                    b.Property<long>("IdMetrica")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_metrica");
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_METRICA");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdMetrica"));
 
                     b.Property<DateTime>("DtLeitura")
                         .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("dt_leitura");
+                        .HasColumnName("DT_LEITURA");
 
-                    b.Property<Guid>("IdDispositivo")
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_dispositivo");
+                    b.Property<long>("IdDispositivo")
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_DISPOSITIVO");
 
-                    b.Property<Guid>("IdTanque")
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_tanque");
+                    b.Property<long>("IdTanque")
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_TANQUE");
 
                     b.Property<decimal?>("Luminosidade")
                         .HasPrecision(10, 2)
                         .HasColumnType("DECIMAL(10,2)")
-                        .HasColumnName("luminosidade");
+                        .HasColumnName("LUMINOSIDADE");
 
                     b.Property<string>("PayloadOriginal")
-                        .HasMaxLength(255)
-                        .HasColumnType("NVARCHAR2(255)")
-                        .HasColumnName("payload_original");
+                        .HasMaxLength(4000)
+                        .HasColumnType("NCLOB")
+                        .HasColumnName("PAYLOAD_ORIGINAL");
 
                     b.Property<decimal?>("Ph")
-                        .HasPrecision(4, 2)
-                        .HasColumnType("DECIMAL(4,2)")
-                        .HasColumnName("ph");
+                        .HasPrecision(5, 2)
+                        .HasColumnType("DECIMAL(5,2)")
+                        .HasColumnName("PH");
 
                     b.Property<decimal?>("Temperatura")
-                        .HasPrecision(4, 2)
-                        .HasColumnType("DECIMAL(4,2)")
-                        .HasColumnName("temperatura");
+                        .HasPrecision(6, 2)
+                        .HasColumnType("DECIMAL(6,2)")
+                        .HasColumnName("TEMPERATURA");
 
                     b.Property<decimal?>("Turbidez")
-                        .HasPrecision(4, 2)
-                        .HasColumnType("DECIMAL(4,2)")
-                        .HasColumnName("turbidez");
+                        .HasPrecision(8, 3)
+                        .HasColumnType("DECIMAL(8,3)")
+                        .HasColumnName("TURBIDEZ");
 
                     b.HasKey("IdMetrica");
 
@@ -281,21 +289,23 @@ namespace Phycocarbon.Infrastructure.Migrations
 
             modelBuilder.Entity("Phycocarbon.Domain.Entities.Perfil", b =>
                 {
-                    b.Property<Guid>("IdPerfil")
+                    b.Property<long>("IdPerfil")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_perfil");
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_PERFIL");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdPerfil"));
 
                     b.Property<string>("Descricao")
-                        .HasMaxLength(255)
-                        .HasColumnType("NVARCHAR2(255)")
-                        .HasColumnName("descricao");
+                        .HasMaxLength(200)
+                        .HasColumnType("NVARCHAR2(200)")
+                        .HasColumnName("DESCRICAO");
 
                     b.Property<string>("NomePerfil")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("nome_perfil");
+                        .HasMaxLength(30)
+                        .HasColumnType("NVARCHAR2(30)")
+                        .HasColumnName("NOME_PERFIL");
 
                     b.HasKey("IdPerfil");
 
@@ -307,42 +317,44 @@ namespace Phycocarbon.Infrastructure.Migrations
 
             modelBuilder.Entity("Phycocarbon.Domain.Entities.PrevisaoIa", b =>
                 {
-                    b.Property<Guid>("IdPrevisao")
+                    b.Property<long>("IdPrevisao")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_previsao");
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_PREVISAO");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdPrevisao"));
 
                     b.Property<decimal>("BiomassaGL")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("DECIMAL(10,2)")
-                        .HasColumnName("biomassa_gl");
+                        .HasPrecision(8, 4)
+                        .HasColumnType("DECIMAL(8,4)")
+                        .HasColumnName("BIOMASSA_G_L");
 
                     b.Property<decimal>("ConfiancaPct")
                         .HasPrecision(5, 2)
                         .HasColumnType("DECIMAL(5,2)")
-                        .HasColumnName("confianca_pct");
+                        .HasColumnName("CONFIANCA_PCT");
 
                     b.Property<DateTime>("DtPicoPrevisto")
                         .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("dt_pico_previsto");
+                        .HasColumnName("DT_PICO_PREVISTO");
 
                     b.Property<DateTime>("DtPrevisao")
                         .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("dt_previsao");
+                        .HasColumnName("DT_PREVISAO");
 
-                    b.Property<Guid>("IdDadoOrbital")
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_dado_orbital");
+                    b.Property<long>("IdDadoOrbital")
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_DADO_ORBITAL");
 
-                    b.Property<Guid>("IdTanque")
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_tanque");
+                    b.Property<long>("IdTanque")
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_TANQUE");
 
                     b.Property<string>("ModeloUtilizado")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("modelo_utilizado");
+                        .HasColumnName("MODELO_UTILIZADO");
 
                     b.HasKey("IdPrevisao");
 
@@ -355,61 +367,63 @@ namespace Phycocarbon.Infrastructure.Migrations
 
             modelBuilder.Entity("Phycocarbon.Domain.Entities.Tanque", b =>
                 {
-                    b.Property<Guid>("IdTanque")
+                    b.Property<long>("IdTanque")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_tanque");
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_TANQUE");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdTanque"));
 
                     b.Property<decimal>("CapacidadeLitros")
                         .HasPrecision(10, 2)
                         .HasColumnType("DECIMAL(10,2)")
-                        .HasColumnName("capacidade_litros");
+                        .HasColumnName("CAPACIDADE_LITROS");
 
                     b.Property<string>("CodigoTanque")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)")
-                        .HasColumnName("codigo_tanque");
+                        .HasMaxLength(20)
+                        .HasColumnType("NVARCHAR2(20)")
+                        .HasColumnName("CODIGO_TANQUE");
 
                     b.Property<DateTime>("DtInstalacao")
                         .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("dt_instalacao");
+                        .HasColumnName("DT_INSTALACAO");
 
-                    b.Property<Guid>("IdFazenda")
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_fazenda");
+                    b.Property<long>("IdFazenda")
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_FAZENDA");
 
                     b.Property<decimal>("PhMax")
                         .HasPrecision(4, 2)
                         .HasColumnType("DECIMAL(4,2)")
-                        .HasColumnName("ph_max");
+                        .HasColumnName("PH_MAX");
 
                     b.Property<decimal>("PhMin")
                         .HasPrecision(4, 2)
                         .HasColumnType("DECIMAL(4,2)")
-                        .HasColumnName("ph_min");
+                        .HasColumnName("PH_MIN");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("NVARCHAR2(30)")
-                        .HasColumnName("status");
+                        .HasMaxLength(15)
+                        .HasColumnType("NVARCHAR2(15)")
+                        .HasColumnName("STATUS");
 
                     b.Property<decimal>("TemperaturaMax")
-                        .HasPrecision(4, 2)
-                        .HasColumnType("DECIMAL(4,2)")
-                        .HasColumnName("temperatura_max");
+                        .HasPrecision(5, 2)
+                        .HasColumnType("DECIMAL(5,2)")
+                        .HasColumnName("TEMPERATURA_MAX");
 
                     b.Property<decimal>("TemperaturaMin")
-                        .HasPrecision(4, 2)
-                        .HasColumnType("DECIMAL(4,2)")
-                        .HasColumnName("temperatura_min");
+                        .HasPrecision(5, 2)
+                        .HasColumnType("DECIMAL(5,2)")
+                        .HasColumnName("TEMPERATURA_MIN");
 
                     b.Property<string>("TipoAlga")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("tipo_alga");
+                        .HasColumnName("TIPO_ALGA");
 
                     b.HasKey("IdTanque");
 
@@ -420,47 +434,49 @@ namespace Phycocarbon.Infrastructure.Migrations
 
             modelBuilder.Entity("Phycocarbon.Domain.Entities.Usuario", b =>
                 {
-                    b.Property<Guid>("IdUsuario")
+                    b.Property<long>("IdUsuario")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_usuario");
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_USUARIO");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdUsuario"));
 
                     b.Property<DateTime>("DtCriacao")
                         .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("dt_criacao");
+                        .HasColumnName("DT_CRIACAO");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("NVARCHAR2(255)")
-                        .HasColumnName("email");
+                        .HasMaxLength(150)
+                        .HasColumnType("NVARCHAR2(150)")
+                        .HasColumnName("EMAIL");
 
-                    b.Property<Guid>("IdPerfil")
-                        .HasColumnType("RAW(16)")
-                        .HasColumnName("id_perfil");
+                    b.Property<long>("IdPerfil")
+                        .HasColumnType("NUMBER(19)")
+                        .HasColumnName("ID_PERFIL");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("nome");
+                        .HasColumnName("NOME");
 
                     b.Property<string>("SenhaHash")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("NVARCHAR2(255)")
-                        .HasColumnName("senha_hash");
+                        .HasColumnName("SENHA_HASH");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("NVARCHAR2(30)")
-                        .HasColumnName("status");
+                        .HasMaxLength(1)
+                        .HasColumnType("NVARCHAR2(1)")
+                        .HasColumnName("STATUS");
 
                     b.Property<string>("Telefone")
-                        .HasMaxLength(30)
-                        .HasColumnType("NVARCHAR2(30)")
-                        .HasColumnName("telefone");
+                        .HasMaxLength(20)
+                        .HasColumnType("NVARCHAR2(20)")
+                        .HasColumnName("TELEFONE");
 
                     b.HasKey("IdUsuario");
 
@@ -470,6 +486,17 @@ namespace Phycocarbon.Infrastructure.Migrations
                     b.HasIndex("IdPerfil");
 
                     b.ToTable("TB_USUARIO", (string)null);
+                });
+
+            modelBuilder.Entity("DispositivoIot", b =>
+                {
+                    b.HasOne("Phycocarbon.Domain.Entities.Tanque", "Tanque")
+                        .WithMany("Dispositivos")
+                        .HasForeignKey("IdTanque")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tanque");
                 });
 
             modelBuilder.Entity("Phycocarbon.Domain.Entities.AlertaCritico", b =>
@@ -502,31 +529,21 @@ namespace Phycocarbon.Infrastructure.Migrations
                     b.Navigation("Fazenda");
                 });
 
-            modelBuilder.Entity("Phycocarbon.Domain.Entities.DispositivoIot", b =>
-                {
-                    b.HasOne("Phycocarbon.Domain.Entities.Tanque", "Tanque")
-                        .WithMany("Dispositivos")
-                        .HasForeignKey("IdTanque")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tanque");
-                });
-
             modelBuilder.Entity("Phycocarbon.Domain.Entities.Fazenda", b =>
                 {
                     b.HasOne("Phycocarbon.Domain.Entities.Usuario", "UsuarioResponsavel")
                         .WithMany("Fazendas")
                         .HasForeignKey("IdUsuarioResponsavel")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_FAZENDA_USUARIO");
 
                     b.Navigation("UsuarioResponsavel");
                 });
 
             modelBuilder.Entity("Phycocarbon.Domain.Entities.MetricaTanque", b =>
                 {
-                    b.HasOne("Phycocarbon.Domain.Entities.DispositivoIot", "Dispositivo")
+                    b.HasOne("DispositivoIot", "Dispositivo")
                         .WithMany("Metricas")
                         .HasForeignKey("IdDispositivo")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -568,7 +585,8 @@ namespace Phycocarbon.Infrastructure.Migrations
                         .WithMany("Tanques")
                         .HasForeignKey("IdFazenda")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_TANQUE_FAZENDA");
 
                     b.Navigation("Fazenda");
                 });
@@ -579,19 +597,20 @@ namespace Phycocarbon.Infrastructure.Migrations
                         .WithMany("Usuarios")
                         .HasForeignKey("IdPerfil")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_USUARIO_PERFIL");
 
                     b.Navigation("Perfil");
+                });
+
+            modelBuilder.Entity("DispositivoIot", b =>
+                {
+                    b.Navigation("Metricas");
                 });
 
             modelBuilder.Entity("Phycocarbon.Domain.Entities.DadoOrbital", b =>
                 {
                     b.Navigation("Previsoes");
-                });
-
-            modelBuilder.Entity("Phycocarbon.Domain.Entities.DispositivoIot", b =>
-                {
-                    b.Navigation("Metricas");
                 });
 
             modelBuilder.Entity("Phycocarbon.Domain.Entities.Fazenda", b =>
