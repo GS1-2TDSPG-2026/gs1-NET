@@ -5,7 +5,8 @@ using Phycocarbon.Application.Services.Interfaces;
 namespace Phycocarbon.Application.Services.Implementations;
 
 public sealed class MetricaTanqueService(
-    IMetricaTanqueRepository metricaRepository)
+    IMetricaTanqueRepository metricaRepository,
+    IAlertaCriticoService alertaService)
     : IMetricaTanqueService
 {
     public IReadOnlyList<MetricaTanqueResponseDto> GetAll()
@@ -31,6 +32,8 @@ public sealed class MetricaTanqueService(
         var metrica = request.ToDomain();
 
         metricaRepository.Add(metrica);
+
+        alertaService.GerarAlertas(metrica);
 
         return MetricaTanqueResponseDto.FromDomain(metrica);
     }
