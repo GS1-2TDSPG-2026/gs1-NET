@@ -82,6 +82,10 @@ public static class PhycocarbonServiceCollectionExtensions
         services.AddScoped<
             IDispositivoIotService,
             DispositivoIotService>();
+        
+        services.AddScoped<
+            IIotTelemetryService,
+            IotTelemetryService>();
 
         services.AddScoped<
             IMetricaTanqueService,
