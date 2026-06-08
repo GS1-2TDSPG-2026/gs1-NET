@@ -50,9 +50,20 @@ public class Program
                 xmlPath,
                 includeControllerXmlComments: true);
         });
-
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("MobilePolicy", policy =>
+            {
+                policy
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
+        
         var app = builder.Build();
-
+        
+        app.UseCors("MobilePolicy");
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
