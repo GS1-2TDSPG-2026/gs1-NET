@@ -1,4 +1,4 @@
-﻿namespace Phycocarbon.Infrastructure.Messaging;
+﻿namespace Phycocarbon.Application.Services.Interfaces;
 
 public interface IMqttCommandPublisher
 {

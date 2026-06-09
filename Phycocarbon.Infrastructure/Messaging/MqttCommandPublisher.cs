@@ -1,18 +1,14 @@
 ﻿using Microsoft.Extensions.Options;
 using MQTTnet;
+using Phycocarbon.Application.Services.Interfaces;
 
 namespace Phycocarbon.Infrastructure.Messaging;
 
-public sealed class MqttCommandPublisher
+public sealed class MqttCommandPublisher(
+    IOptions<MqttOptions> options)
     : IMqttCommandPublisher
 {
-    private readonly MqttOptions _options;
-
-    public MqttCommandPublisher(
-        IOptions<MqttOptions> options)
-    {
-        _options = options.Value;
-    }
+    private readonly MqttOptions _options = options.Value;
 
     public async Task PublicarComandoAsync(
         string topic,
@@ -22,15 +18,16 @@ public sealed class MqttCommandPublisher
 
         var client = factory.CreateMqttClient();
 
-        var options = new MqttClientOptionsBuilder()
+        var clientOptions = new MqttClientOptionsBuilder()
             .WithTcpServer(
                 _options.Host,
                 _options.Port)
             .WithClientId(
-                $"{_options.ClientId}-publisher")
+                $"{_options.ClientId}-publisher-{Guid.NewGuid()}")
+            .WithCleanSession()
             .Build();
 
-        await client.ConnectAsync(options);
+        await client.ConnectAsync(clientOptions);
 
         var message =
             new MqttApplicationMessageBuilder()
@@ -40,6 +37,11 @@ public sealed class MqttCommandPublisher
 
         await client.PublishAsync(message);
 
-        await client.DisconnectAsync();
+        var disconnectOptions =
+            new MqttClientDisconnectOptions();
+
+        await client.DisconnectAsync(
+            disconnectOptions,
+            CancellationToken.None);
     }
 }

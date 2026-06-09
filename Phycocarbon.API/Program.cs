@@ -22,6 +22,9 @@ public class Program
 
         builder.Services
             .AddApplicationServices();
+        
+        builder.Services
+            .AddMessagingServices(builder.Configuration);
 
         builder.Services.AddHostedService<
             MqttTelemetryBackgroundService>();

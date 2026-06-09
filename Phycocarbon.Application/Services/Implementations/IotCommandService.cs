@@ -1,13 +1,11 @@
 ﻿using Phycocarbon.Application.DTOs;
 using Phycocarbon.Application.Repositories;
 using Phycocarbon.Application.Services.Interfaces;
-using Phycocarbon.Infrastructure.Messaging;
 
 namespace Phycocarbon.Application.Services.Implementations;
 
 public sealed class IotCommandService(
     IDispositivoIotRepository dispositivoRepository,
-    
     IMqttCommandPublisher mqttPublisher)
     : IIotCommandService
 {
@@ -22,6 +20,12 @@ public sealed class IotCommandService(
         {
             throw new InvalidOperationException(
                 "Dispositivo não encontrado.");
+        }
+
+        if (dispositivo.Ativo != "S")
+        {
+            throw new InvalidOperationException(
+                "Dispositivo IoT está inativo.");
         }
 
         await mqttPublisher.PublicarComandoAsync(

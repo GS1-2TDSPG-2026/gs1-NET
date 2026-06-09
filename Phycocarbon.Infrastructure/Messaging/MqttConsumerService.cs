@@ -1,7 +1,4 @@
-﻿
-using System.Buffers;
-using System.Text;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MQTTnet;
@@ -13,7 +10,7 @@ public sealed class MqttConsumerService : BackgroundService
     private readonly ILogger<MqttConsumerService> _logger;
     private readonly MqttOptions _options;
     private readonly IMqttTelemetryProcessor _processor;
-    
+
     public MqttConsumerService(
         ILogger<MqttConsumerService> logger,
         IOptions<MqttOptions> options,
@@ -27,19 +24,20 @@ public sealed class MqttConsumerService : BackgroundService
     protected override async Task ExecuteAsync(
         CancellationToken stoppingToken)
     {
+        var factory = new MqttClientFactory();
+        var client = factory.CreateMqttClient();
+
         try
         {
-            var factory = new MqttClientFactory();
-            var client = factory.CreateMqttClient();
-
-            client.ApplicationMessageReceivedAsync += async e =>
+            client.ApplicationMessageReceivedAsync += async args =>
             {
-                var payloadBytes = new byte[
-                    checked((int)e.ApplicationMessage.Payload.Length)];
+                var payload =
+                    args.ApplicationMessage.ConvertPayloadToString();
 
-                e.ApplicationMessage.Payload.CopyTo(payloadBytes);
-
-                var payload = Encoding.UTF8.GetString(payloadBytes);
+                _logger.LogInformation(
+                    "Mensagem MQTT recebida no tópico {Topic}: {Payload}",
+                    args.ApplicationMessage.Topic,
+                    payload);
 
                 try
                 {
@@ -51,7 +49,7 @@ public sealed class MqttConsumerService : BackgroundService
                 {
                     _logger.LogError(
                         exception,
-                        "Erro inesperado ao processar mensagem MQTT");
+                        "Erro inesperado ao processar mensagem MQTT.");
                 }
             };
 
@@ -61,24 +59,30 @@ public sealed class MqttConsumerService : BackgroundService
                 _options.Port,
                 _options.ClientId);
 
-            var options = new MqttClientOptionsBuilder()
+            var clientOptions = new MqttClientOptionsBuilder()
                 .WithTcpServer(
                     _options.Host,
                     _options.Port)
                 .WithClientId(
                     _options.ClientId)
+                .WithCleanSession()
                 .Build();
 
             await client.ConnectAsync(
-                options,
+                clientOptions,
                 stoppingToken);
 
+            var subscribeOptions = factory
+                .CreateSubscribeOptionsBuilder()
+                .WithTopicFilter(_options.Topic)
+                .Build();
+
             await client.SubscribeAsync(
-                _options.Topic,
-                cancellationToken: stoppingToken);
+                subscribeOptions,
+                stoppingToken);
 
             _logger.LogInformation(
-                "Inscrito no tópico {Topic}",
+                "Inscrito no tópico MQTT {Topic}",
                 _options.Topic);
 
             while (!stoppingToken.IsCancellationRequested)
@@ -90,13 +94,26 @@ public sealed class MqttConsumerService : BackgroundService
         }
         catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
         {
-            _logger.LogInformation("Consumidor MQTT encerrado por cancelamento.");
+            _logger.LogInformation(
+                "Consumidor MQTT encerrado por cancelamento.");
         }
         catch (Exception exception)
         {
             _logger.LogError(
                 exception,
-                "Falha fatal no consumidor MQTT");
+                "Falha fatal no consumidor MQTT.");
+        }
+        finally
+        {
+            if (client.IsConnected)
+            {
+                var disconnectOptions =
+                    new MqttClientDisconnectOptions();
+
+                await client.DisconnectAsync(
+                    disconnectOptions,
+                    CancellationToken.None);
+            }
         }
     }
 }
