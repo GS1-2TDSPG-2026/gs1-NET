@@ -1,332 +1,162 @@
-# Phycocarbon
+# 🌿 Phycocarbon — API de Ingestão e Telemetria IoT
 
-Plataforma de monitoramento para biofotorreatores com ingestão de telemetria via MQTT, persistência em Oracle Database e exposição de APIs REST para operação e consulta de dados.
-
----
-
-## Objetivo do Projeto
-
-A Phycocarbon é uma plataforma de monitoramento para biofotorreatores utilizados no cultivo de microalgas.
-
-A solução recebe dados de sensores embarcados em dispositivos ESP32 através do protocolo MQTT, processa as informações recebidas e realiza a persistência em Oracle Database.
-
-Além do monitoramento operacional dos tanques, a plataforma disponibiliza APIs REST para gerenciamento de usuários, fazendas, tanques, dispositivos IoT, métricas, alertas críticos, dados orbitais e previsões geradas por inteligência artificial.
+> **Microsserviço .NET 10** responsável pela ingestão de telemetria de alta frequência, integração MQTT com dispositivos ESP32, consumo de dados orbitais e persistência de previsões geradas por Inteligência Artificial — componente central da plataforma Phycocarbon de monitoramento de biofotorreatores de microalgas.
 
 ---
 
-# Problema Resolvido
+## 📋 Índice
 
-Antes do fluxo atual, a telemetria IoT não estava conectada a um pipeline completo de ingestão e persistência.
-
-O projeto resolve esse problema integrando:
-
-* Sensores embarcados em ESP32;
-* Comunicação MQTT;
-* Processamento assíncrono das mensagens;
-* Persistência estruturada em Oracle Database;
-* Consulta dos dados através de APIs REST.
-
-Dessa forma, as informações coletadas nos tanques passam a ser armazenadas e disponibilizadas para monitoramento e análise.
+- [Visão Geral](#visão-geral)
+- [Stack Tecnológica](#stack-tecnológica)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Domínio de Responsabilidade](#domínio-de-responsabilidade)
+- [Fluxo de Telemetria MQTT](#fluxo-de-telemetria-mqtt)
+- [Endpoints da API](#endpoints-da-api)
+- [Como Executar](#como-executar)
+- [Testes e Validação](#testes-e-validação)
+- [Decisões de Arquitetura](#decisões-de-arquitetura)
+- [Equipe](#equipe)
 
 ---
 
-# Arquitetura da Solução
+## Visão Geral
 
-A solução preserva a arquitetura baseada em:
+O **Phycocarbon** é uma plataforma de bioeconomia que integra IoT, Machine Learning e dados orbitais (NASA/Copernicus) para otimizar o cultivo de microalgas como Spirulina e Chlorella em biofotorreatores. A plataforma viabiliza:
 
-```text
-Controller → Service → Repository → Oracle Database
+- Monitoramento contínuo de tanques via sensores embarcados
+- Geração auditável de créditos de carbono baseados no CO₂ sequestrado
+- Predição do pico de biomassa com 48 horas de antecedência
+- Marketplace B2B para comercialização de biomassa de alta qualidade
+
+Este repositório contém o **microsserviço .NET**, responsável exclusivamente pela camada de **ingestão, telemetria e dados operacionais brutos** do ecossistema.
+
+---
+
+
+## Stack Tecnológica
+
+| Tecnologia | Versão | Função |
+|---|---|---|
+| ASP.NET Core | 10.0 | Framework da Web API REST |
+| Entity Framework Core | 10.0.8 | ORM e mapeamento relacional |
+| Oracle.EntityFrameworkCore | 10.23.26200 | Provider Oracle para EF Core |
+| MQTTnet | 5.1.0 | Client MQTT para ingestão de telemetria |
+| HiveMQ Broker | — | Broker MQTT público de desenvolvimento |
+| Swashbuckle / OpenAPI | 10.2.1 | Documentação automática dos endpoints |
+
+
+---
+
+## Estrutura do Projeto
+
+```
+Phycocarbon.sln
+│
+├── Phycocarbon.API                         # Camada de apresentação
+│   ├── Controllers/                        # Endpoints REST
+│   │   ├── AlertaCriticoController.cs
+│   │   ├── DadoOrbitalController.cs
+│   │   ├── DispositivoIotController.cs
+│   │   ├── FazendaController.cs
+│   │   ├── IotController.cs               # Comandos bidirecionais para ESP32
+│   │   ├── MetricaTanqueController.cs
+│   │   ├── PerfilController.cs
+│   │   ├── PrevisaoIaController.cs
+│   │   ├── TanqueController.cs
+│   │   └── UsuarioController.cs
+│   ├── Exceptions/
+│   │   └── GlobalExceptionHandler.cs      # Tratamento centralizado de erros
+│   ├── Extensions/
+│   │   └── PhycocarbonServiceCollectionExtensions.cs  # Registro de DI
+│   ├── HostedServices/
+│   │   └── MqttTelemetryBackgroundService.cs          # Worker MQTT em background
+│   └── Program.cs
+│
+├── Phycocarbon.Application                 # Camada de aplicação
+│   ├── DTOs/                              # Contratos de entrada e saída
+│   ├── Repositories/                      # Interfaces de repositório
+│   └── Services/
+│       ├── Interfaces/                    # Contratos de serviço
+│       └── Implementations/              # Lógica de aplicação
+│
+├── Phycocarbon.Domain                      # Camada de domínio
+│   ├── Entities/                          # Entidades do domínio
+│   │   ├── AlertaCritico.cs
+│   │   ├── DadoOrbital.cs
+│   │   ├── DispositivoIot.cs
+│   │   ├── Fazenda.cs
+│   │   ├── MetricaTanque.cs
+│   │   ├── Perfil.cs
+│   │   ├── PrevisaoIa.cs
+│   │   ├── Tanque.cs
+│   │   └── Usuario.cs
+│   └── Helpers/
+│       └── HashHelper.cs
+│
+└── Phycocarbon.Infrastructure              # Camada de infraestrutura
+    ├── Messaging/                         # Integração MQTT
+    │   ├── MqttConsumerService.cs         # Subscrição de tópicos
+    │   ├── MqttTelemetryProcessor.cs      # Processamento de payload
+    │   ├── MqttCommandPublisher.cs        # Publicação de comandos (atuadores)
+    │   ├── MqttOptions.cs
+    │   └── TelemetriaPayload.cs
+    ├── Persistence/
+    │   ├── PhycocarbonContext.cs          # DbContext Oracle
+    │   ├── Configurations/               # Fluent API para mapeamento de tabelas
+    │   └── Repositories/                 # Implementações dos repositórios
+    └── Migrations/                        # Histórico de migrações EF Core
 ```
 
-e adiciona uma camada de mensageria MQTT responsável pela ingestão de telemetria.
+---
 
-## Diagrama de Arquitetura
+## Domínio de Responsabilidade
 
-```mermaid
-flowchart LR
+Este microsserviço é o **dono exclusivo** das seguintes tabelas Oracle:
 
-    ESP32[ESP32] --> MQTT[HiveMQ Broker]
+| Tabela | Descrição |
+|---|---|
+| `TB_DISPOSITIVO_IOT` | Registro e status das placas ESP32 de campo (MAC Address, localização, tanque vinculado)| 
+| `TB_METRICAS_TANQUE` | Série temporal de pH, temperatura, turbidez e luminosidade recebida via MQTT |
+| `TB_ALERTA_CRITICO` | Alertas gerados por valores fora dos limites biológicos toleráveis |
+| `TB_DADO_ORBITAL` | Histórico diário de radiação PAR e índices UV consumidos da NASA/Copernicus |
+| `TB_PREVISOES_IA` | Resultados preditivos do modelo de ML sobre crescimento de biomassa nas próximas 48h |
 
-    MQTT --> Consumer[MqttConsumerService]
-
-    Consumer --> Processor[MqttTelemetryProcessor]
-
-    Processor --> MetricService[IMetricaTanqueService]
-
-    MetricService --> MetricRepo[IMetricaTanqueRepository]
-
-    MetricRepo --> Oracle[(Oracle Database)]
-
-    API[Controllers] --> Services[Application Services]
-
-    Services --> Repositories[Repositories]
-
-    Repositories --> Oracle
-```
+> As tabelas de negócio (`TB_FAZENDA`, `TB_TANQUE`, `TB_USUARIO`, `TB_CREDITO_CARBONO`, `TB_TRANSACAO_MARKETPLACE`) são propriedade da API Java Spring Boot.
 
 ---
 
 ## Fluxo de Telemetria MQTT
 
-```mermaid
-sequenceDiagram
-
-    participant ESP32
-    participant Broker as HiveMQ Broker
-    participant Consumer as MqttConsumerService
-    participant Processor as MqttTelemetryProcessor
-    participant Service as MetricaTanqueService
-    participant Oracle
-
-    ESP32->>Broker: Publica telemetria
-
-    Broker->>Consumer: Entrega mensagem
-
-    Consumer->>Processor: Processa payload
-
-    Processor->>Service: Cria métrica
-
-    Service->>Oracle: Persiste dados
+```
+ESP32 (Campo)
+    │  publica JSON no tópico
+    │  phycocarbon/fiap/tanque01/telemetria
+    ▼
+HiveMQ Broker (broker.hivemq.com:1883)
+    │
+    ▼
+MqttTelemetryBackgroundService   ← IHostedService em background
+    │  recebe a mensagem bruta
+    ▼
+MqttConsumerService
+    │  entrega o payload como string
+    ▼
+MqttTelemetryProcessor
+    │  deserializa JSON → TelemetriaMqttDto
+    │  valida campos obrigatórios
+    │  localiza DispositivoIot no banco
+    │  identifica Tanque vinculado
+    ▼
+MetricaTanqueService
+    │  mapeia para entidade MetricaTanque
+    ▼
+MetricaTanqueRepository
+    │
+    ▼
+Oracle Database → TB_METRICAS_TANQUE
 ```
 
----
-
-## Desenvolvimento da Solução
-
-A aplicação foi desenvolvida utilizando ASP.NET Core Web API seguindo uma arquitetura em camadas.
-
-### Estrutura dos Projetos
-
-- Phycocarbon.API
-  - Controllers
-  - Swagger
-  - Configurações da aplicação
-
-- Phycocarbon.Application
-  - DTOs
-  - Serviços
-  - Interfaces
-  - Contratos de repositório
-
-- Phycocarbon.Domain
-  - Entidades de domínio
-
-- Phycocarbon.Infrastructure
-  - Persistência Oracle
-  - Repositórios
-  - Integração MQTT
-  - Serviços de mensageria
-
-### Funcionalidades Implementadas
-
-- Cadastro e consulta de usuários.
-- Cadastro e consulta de perfis.
-- Cadastro e consulta de fazendas.
-- Cadastro e consulta de tanques.
-- Cadastro e consulta de dispositivos IoT.
-- Registro de métricas dos tanques.
-- Gerenciamento de alertas críticos.
-- Consulta de dados orbitais.
-- Consulta de previsões geradas por IA.
-- Ingestão automática de telemetria via MQTT.
-
-## Fluxo de Funcionamento
-
-1. O ESP32 publica dados no broker MQTT.
-2. O `MqttConsumerService` recebe a mensagem.
-3. O `MqttTelemetryProcessor` interpreta e valida o payload.
-4. O dispositivo é localizado no banco de dados.
-5. O tanque associado é identificado.
-6. A métrica é persistida utilizando os serviços da aplicação.
-7. Os dados ficam disponíveis para consulta via API REST.
-
-## Decisões Técnicas
-
-* O consumidor MQTT não acessa diretamente o banco de dados.
-* O processamento do payload é centralizado em um componente dedicado.
-* A camada de serviços existente foi reutilizada.
-* A persistência continua sendo realizada através dos repositórios da aplicação.
-* O Oracle Database é utilizado como banco principal.
-
----
-
-# Tecnologias Utilizadas
-
-* .NET 10
-* Entity Framework Core
-* Oracle Database
-* MQTTnet
-* Swagger / OpenAPI
-* REST API
-
----
-
-# Requisitos para Execução
-
-Antes de executar o projeto, é necessário possuir:
-
-* .NET SDK compatível com o projeto
-* Oracle Database
-* Broker MQTT compatível com HiveMQ
-* Visual Studio ou Visual Studio Code
-
----
-
-# Como Executar
-
-## 1. Clonar o repositório
-
-```bash
-git clone <url-do-repositorio>
-cd Phycocarbon
-```
-
-## 2. Restaurar dependências
-
-```bash
-dotnet restore
-```
-
-## 3. Configurar a conexão Oracle
-
-No arquivo:
-
-```text
-Phycocarbon.API/appsettings.json
-```
-
-Configure:
-
-```json
-{
-  "ConnectionStrings": {
-    "OracleDb": "User Id=SEU_USUARIO;Password=SUA_SENHA;Data Source=SEU_HOST:1521/SEU_SERVICE_NAME"
-  }
-}
-```
-
-## 4. Configurar MQTT
-
-```json
-{
-  "Mqtt": {
-    "Host": "broker.hivemq.com",
-    "Port": 1883,
-    "Topic": "phycocarbon/fiap/tanque01/telemetria",
-    "ClientId": "phycocarbon-api"
-  }
-}
-```
-
-## 5. Compilar o projeto
-
-```bash
-dotnet build
-```
-
-## 6. Executar a API
-
-```bash
-dotnet run --project Phycocarbon.API
-```
-
----
-
-# Acesso à Aplicação
-
-Após iniciar a API:
-
-```text
-Swagger:
-https://localhost:7254
-
-HTTP:
-http://localhost:5281
-```
-
-Todos os endpoints podem ser testados diretamente pela interface Swagger.
-
----
-
-# Endpoints Disponíveis
-
-Todos os controllers seguem o padrão:
-
-```text
-api/[controller]
-```
-
-| Recurso        | Rotas                       |
-| -------------- | --------------------------- |
-| AlertaCritico  | GET, GET/{id}, POST, DELETE |
-| DadoOrbital    | GET, GET/{id}, POST, DELETE |
-| DispositivoIot | GET, GET/{id}, POST, DELETE |
-| Fazenda        | GET, GET/{id}               |
-| MetricaTanque  | GET, GET/{id}, POST, DELETE |
-| Perfil         | GET, GET/{id}               |
-| PrevisaoIa     | GET, GET/{id}, POST, DELETE |
-| Tanque         | GET, GET/{id}               |
-| Usuario        | GET, GET/{id}               |
-
----
-
-# Testes
-
-## Cenários de Teste
-
-| Teste              | Objetivo                     |
-| ------------------ | ---------------------------- |
-| GET MetricaTanque  | Verificar resposta da API    |
-| POST MetricaTanque | Validar persistência manual  |
-| Publicação MQTT    | Validar ingestão automática  |
-| Consulta Oracle    | Confirmar gravação dos dados |
-
----
-
-## Teste 1 — Consulta via Swagger
-
-Acesse o Swagger e execute:
-
-```http
-GET /api/MetricaTanque
-```
-
-### Resultado Esperado
-
-* HTTP 200 OK
-* Lista de métricas retornada
-* Ausência de erros nos logs
-
----
-
-## Teste 2 — Criação de Métrica via REST
-
-Exemplo utilizando curl:
-
-```bash
-curl -X POST https://localhost:7254/api/MetricaTanque \
--H "Content-Type: application/json" \
--d "{
-  \"idDispositivo\":123,
-  \"idTanque\":10,
-  \"ph\":7.2,
-  \"temperatura\":26.5,
-  \"turbidez\":18.4,
-  \"luminosidade\":850
-}"
-```
-
-### Resultado Esperado
-
-* HTTP 201 Created
-* Registro criado no banco
-* Retorno contendo os dados persistidos
-
----
-
-## Teste 3 — Ingestão MQTT
-
-Publicar o seguinte payload no tópico configurado:
+**Payload esperado do ESP32:**
 
 ```json
 {
@@ -341,80 +171,177 @@ Publicar o seguinte payload no tópico configurado:
 }
 ```
 
-### Fluxo Esperado
+---
 
-1. O MQTT recebe a mensagem.
-2. O Consumer processa a mensagem.
-3. O Processor valida o payload.
-4. O dispositivo é localizado.
-5. O tanque é identificado.
-6. A métrica é persistida.
+## Endpoints da API
+
+Todos os endpoints seguem o padrão `/api/[controller]`.
+
+| Controller | Métodos Disponíveis | Descrição |
+|---|---|---|
+| `AlertaCritico` | GET, GET/{id}, POST, PATCH/{id}/resolver, DELETE/{id} | Gestão de alertas críticos de tanques |
+| `DadoOrbital` | GET, GET/{id}, POST, DELETE/{id} | Dados de radiação PAR e índices UV orbitais |
+| `DispositivoIot` | GET, GET/{id}, POST, DELETE/{id} | Cadastro e gerenciamento de placas ESP32 |
+| `Fazenda` | GET, GET/{id} | Consulta de fazendas (leitura; escrita na API Java) |
+| `Iot` | POST /telemetria, POST /comando | Ingestão manual de telemetria e envio de comandos a atuadores |
+| `MetricaTanque` | GET, GET/{id}, POST, DELETE/{id} | Registro e consulta do histórico de métricas |
+| `Perfil` | GET, GET/{id} | Consulta de perfis de acesso |
+| `PrevisaoIa` | GET, GET/{id}, POST, DELETE/{id} | Previsões de biomassa geradas pelo modelo de ML |
+| `Tanque` | GET, GET/{id} | Consulta de tanques (leitura; escrita na API Java) |
+| `Usuario` | GET, GET/{id} | Consulta de usuários |
+
+A documentação interativa completa está disponível via **Swagger UI** em `/` após iniciar a aplicação.
 
 ---
 
-## Teste 4 — Validação no Oracle
+## Como Executar
 
-Após publicar a mensagem MQTT, execute:
+### Pré-requisitos
 
-```sql
-SELECT
-    ID_METRICA,
-    ID_DISPOSITIVO,
-    ID_TANQUE,
-    DT_LEITURA,
-    PH,
-    TEMPERATURA,
-    TURBIDEZ,
-    LUMINOSIDADE
-FROM TB_METRICAS_TANQUE
-ORDER BY ID_METRICA DESC;
+- [.NET SDK 10.0](https://dotnet.microsoft.com/download)
+- Oracle Database acessível (local, container ou cloud)
+- Acesso ao broker MQTT (padrão: `broker.hivemq.com`)
+
+### 1. Clonar o repositório
+
+```bash
+git clone <url-do-repositorio>
+cd gs1-NET
 ```
 
-### Resultado Esperado
+### 2. Restaurar dependências
 
-* Novo registro inserido.
-* Dados compatíveis com o payload enviado.
-* Persistência confirmada.
+```bash
+dotnet restore
+```
 
----
+### 3. Configurar a conexão Oracle
 
-## Estrutura do Projeto
+Edite `Phycocarbon.API/appsettings.json`:
 
-```text
-Phycocarbon.sln
+```json
+{
+  "ConnectionStrings": {
+    "OracleDb": "User Id=SEU_USUARIO;Password=SUA_SENHA;Data Source=SEU_HOST:1521/SEU_SERVICE_NAME"
+  },
+  "Mqtt": {
+    "Host": "broker.hivemq.com",
+    "Port": 1883,
+    "Topic": "phycocarbon/fiap/tanque01/telemetria",
+    "ClientId": "phycocarbon-api"
+  }
+}
+```
 
-├── Phycocarbon.API
-│   ├── Controllers
-│   ├── Extensions
-│   ├── Program.cs
-│   └── appsettings.json
-│
-├── Phycocarbon.Application
-│   ├── DTOs
-│   ├── Interfaces
-│   ├── Services
-│   └── Repositories
-│
-├── Phycocarbon.Domain
-│   └── Entities
-│
-└── Phycocarbon.Infrastructure
-    ├── Repositories
-    ├── Persistence
-    └── Messaging
-        ├── MqttConsumerService
-        ├── MqttTelemetryProcessor
-        └── MqttOptions
+### 4. Aplicar as migrações
+
+```bash
+dotnet ef database update --project Phycocarbon.Infrastructure --startup-project Phycocarbon.API
+```
+
+### 5. Executar a API
+
+```bash
+dotnet run --project Phycocarbon.API
+```
+
+### 6. Acessar o Swagger
+
+```
+https://localhost:7254
+http://localhost:5281
 ```
 
 ---
 
-# 👥 Integrantes da Equipe
+## Testes e Validação
 
-| Nome                           | RM     | Turma  | GitHub        |
-| ------------------------------ | ------ | ------ | ------------- |
-| Alexander Dennis Isidro Mamani | 565554 | 2TDSPG | alex-isidro   |
-| Arthur Brito da Silva          | 562085 | 2TDSPG | thubrito      |
-| Kelson Zhang                   | 563748 | 2TDSPG | KelsonZh0     |
-| Luiz Felipe Flosi dos Santos   | 563197 | 2TDSPG | felipeflosii  |
-| Pedro Henrique Brum Lopes      | 561780 | 2TDSPG | PedroBrum-DEV |
+### Teste 1 — Consulta de Métricas via Swagger
+
+```http
+GET /api/MetricaTanque
+```
+
+**Resultado esperado:** HTTP 200 com lista de métricas persistidas.
+
+---
+
+### Teste 2 — Inserção Manual via REST
+
+```bash
+curl -X POST https://localhost:7254/api/MetricaTanque \
+  -H "Content-Type: application/json" \
+  -d '{
+    "idDispositivo": 123,
+    "idTanque": 10,
+    "ph": 7.2,
+    "temperatura": 26.5,
+    "turbidez": 18.4,
+    "luminosidade": 850
+  }'
+```
+
+**Resultado esperado:** HTTP 201 Created com registro persistido no Oracle.
+
+---
+
+### Teste 3 — Ingestão via MQTT
+
+Publique no tópico `phycocarbon/fiap/tanque01/telemetria` usando qualquer cliente MQTT (MQTTX, mosquitto_pub):
+
+```bash
+mosquitto_pub \
+  -h broker.hivemq.com \
+  -t "phycocarbon/fiap/tanque01/telemetria" \
+  -m '{"dispositivo_id":123,"pH":7.2,"temp":26.5,"turbidez":18.4,"luminosidade":850,"status":"OK","pronto_colheita":false,"servo_aberto":true}'
+```
+
+**Fluxo esperado:** Consumer recebe → Processor valida → dispositivo localizado → métrica persistida.
+
+---
+
+### Teste 4 — Alerta de pH Crítico
+
+Publique um payload com pH fora do range biológico tolerável:
+
+```bash
+mosquitto_pub \
+  -h broker.hivemq.com \
+  -t "phycocarbon/fiap/tanque01/telemetria" \
+  -m '{"dispositivo_id":123,"pH":4.2,"temp":25.0,"turbidez":18.4,"luminosidade":850,"status":"ALERTA","pronto_colheita":false,"servo_aberto":false}'
+```
+
+**Resultado esperado:** Registro inserido em `TB_METRICAS_TANQUE`; Trigger Oracle intercepta pH < 5.0 e cria entrada em `TB_ALERTA_CRITICO` automaticamente.
+
+---
+
+## Decisões de Arquitetura
+
+**Separação de contextos por domínio de escrita**
+O .NET é write-intensive: absorve o fluxo contínuo do ESP32 sem impactar as operações transacionais financeiras da API Java. Cada microsserviço escala de forma independente.
+
+**MqttTelemetryProcessor desacoplado do Consumer**
+O Consumer apenas entrega o payload como string. Todo o parsing, validação e orquestração são responsabilidade do Processor, facilitando testes unitários isolados e a troca futura do broker.
+
+**Reutilização da camada de serviços para ingestão MQTT**
+A métrica recebida via MQTT passa exatamente pelo mesmo fluxo que uma métrica recebida via REST (`MetricaTanqueService → Repository`), garantindo consistência e eliminando duplicação de lógica.
+
+**Bridge PL/SQL como integração entre microsserviços**
+A comunicação entre .NET e Java ocorre exclusivamente pelo banco Oracle via Procedures PL/SQL, evitando acoplamento direto entre os dois serviços e mantendo a transacionalidade garantida pelo SGBD.
+
+**Documentação XML no Swagger**
+`GenerateDocumentationFile=true` no `.csproj` garante que os XML comments dos controllers alimentam automaticamente o Swagger, mantendo a documentação sempre sincronizada com o código.
+
+---
+
+## Equipe
+
+| Nome | RM | Turma | GitHub |
+|---|---|---|---|
+| Alexander Dennis Isidro Mamani | 565554 | 2TDSPG | [@alex-isidro](https://github.com/alex-isidro) |
+| Arthur Brito da Silva | 562085 | 2TDSPG | [@thubrito](https://github.com/thubrito) |
+| Kelson Zhang | 563748 | 2TDSPG | [@KelsonZh0](https://github.com/KelsonZh0) |
+| Luiz Felipe Flosi dos Santos | 563197 | 2TDSPG | [@felipeflosii](https://github.com/felipeflosii) |
+| Pedro Henrique Brum Lopes | 561780 | 2TDSPG | [@PedroBrum-DEV](https://github.com/PedroBrum-DEV) |
+
+
