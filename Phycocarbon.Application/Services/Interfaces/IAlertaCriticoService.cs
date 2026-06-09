@@ -15,5 +15,6 @@ public interface IAlertaCriticoService
 
     public void GerarAlertas(MetricaTanque metrica);
     
+    bool Resolver(long id);
 
 }

@@ -145,4 +145,18 @@ public sealed class AlertaCriticoService(
 
         alertaRepository.Add(alerta);
     }
+    
+    public bool Resolver(long id)
+    {
+        var alerta = alertaRepository.GetById(id);
+
+        if (alerta is null)
+            return false;
+
+        alerta.Resolver();
+
+        alertaRepository.Update(alerta);
+
+        return true;
+    }
 }

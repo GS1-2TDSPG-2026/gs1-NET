@@ -86,7 +86,10 @@ public static class PhycocarbonServiceCollectionExtensions
         services.AddScoped<
             IIotTelemetryService,
             IotTelemetryService>();
-
+        services.AddScoped<
+            IIotCommandService,
+            IotCommandService>();
+        
         services.AddScoped<
             IMetricaTanqueService,
             MetricaTanqueService>();
@@ -123,6 +126,10 @@ public static class PhycocarbonServiceCollectionExtensions
         services.AddSingleton<
             IMqttTelemetryProcessor,
             MqttTelemetryProcessor>();
+        
+        services.AddScoped<
+            IMqttCommandPublisher,
+            MqttCommandPublisher>();
 
         return services;
     }

@@ -43,4 +43,9 @@ public sealed class AlertaCritico
         Status = status;
         DtAlerta = DateTime.UtcNow;
     }
+    
+    public void Resolver()
+    {
+        Status = "RESOLVIDO";
+    }
 }

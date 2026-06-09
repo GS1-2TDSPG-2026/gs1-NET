@@ -2,6 +2,9 @@ using System.Reflection;
 using Microsoft.OpenApi;
 using Phycocarbon.API.Extensions;
 using Phycocarbon.API.HostedServices;
+using Phycocarbon.Application.Services.Implementations;
+using Phycocarbon.Application.Services.Interfaces;
+using Phycocarbon.Infrastructure.Messaging;
 
 namespace Phycocarbon.API;
 

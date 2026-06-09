@@ -54,4 +54,12 @@ public class AlertaCriticoController(
             ? NoContent()
             : NotFound();
     }
+    
+    [HttpPatch("{id:long}/resolver")]
+    public IActionResult Resolver(long id)
+    {
+        return alertaService.Resolver(id)
+            ? NoContent()
+            : NotFound();
+    }
 }
