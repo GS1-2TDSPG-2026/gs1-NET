@@ -19,6 +19,52 @@
 
 ---
 
+## Diagrama de Arquitetura
+
+```mermaid
+flowchart TD
+
+    U[Usuário]
+
+    APP[Aplicativo Mobile<br>React Native]
+
+    API[Phycocarbon API<br>.NET 10]
+
+    MQTT[HiveMQ Broker]
+
+    ESP[ESP32<br>Sensores IoT]
+
+    DB[(Oracle Database)]
+
+    IA[Modelo de IA<br>Predição de Biomassa]
+
+    U --> APP
+
+    APP --> API
+
+    ESP -->|Telemetria MQTT| MQTT
+
+    MQTT --> API
+
+    API --> DB
+
+    DB --> IA
+
+    IA --> DB
+```
+
+---
+
+## Desenvolvimento
+
+O projeto Phycocarbon foi desenvolvido utilizando ASP.NET Core 10 seguindo uma arquitetura em camadas, separando responsabilidades entre API, Aplicação, Domínio e Infraestrutura.
+
+A comunicação com os dispositivos IoT ocorre por meio do protocolo MQTT utilizando o broker HiveMQ. Os sensores instalados nos ESP32 enviam métricas ambientais dos tanques de microalgas, como pH, temperatura, turbidez e luminosidade.
+
+Os dados recebidos são processados pela API, validados e armazenados em banco Oracle através do Entity Framework Core.
+
+Além do armazenamento das métricas, a solução permite integração com modelos de Inteligência Artificial para geração de previsões de biomassa e identificação antecipada do momento ideal para colheita.
+
 ## Visão Geral
 
 O **Phycocarbon** é uma plataforma de bioeconomia que integra IoT, Machine Learning e dados orbitais (NASA/Copernicus) para otimizar o cultivo de microalgas como Spirulina e Chlorella em biofotorreatores. A plataforma viabiliza:
